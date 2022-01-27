@@ -23,6 +23,9 @@ export default function useAuth() {
             email: user.email ?? "",
           })
         );
+        navigate(appPaths.workspaces);
+      } else {
+        navigate(appPaths.login);
       }
     });
     return unsubscribe;

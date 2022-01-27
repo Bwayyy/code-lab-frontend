@@ -1,17 +1,43 @@
-import { doc } from "firebase/firestore";
+import { addDoc, collection, doc, setDoc } from "firebase/firestore";
+import { useMemo } from "react";
 import { useDocument, useDocumentData } from "react-firebase-hooks/firestore";
 import { useParams } from "react-router-dom";
+import { Snapshot } from "yjs";
+import useFirestoreRefPath from "../../hooks/useFirestoreRefPath";
 import { Repository } from "../../types/file-repository-types";
 import { fireStore } from "../firebaseApp";
 
 export default function useRepository() {
   const { workspaceId, liveCodingId } = useParams();
-  const [snapshot, loading, error] = useDocumentData(
+  const { getLiveCodingFileCollectionPath, getLiveCodingRepoItemPath } =
+    useFirestoreRefPath();
+  const [snapshot, loading, error] = useDocument(
     doc(
       fireStore,
-      `workspaces/${workspaceId}/liveCodings/${liveCodingId}/repository/0`
+      getLiveCodingRepoItemPath(workspaceId ?? "", liveCodingId ?? "")
     )
   );
-  const repository: Repository = snapshot ? JSON.parse(snapshot.json) : [];
-  return { repository, loading, error };
+  const repository: Repository = useMemo(
+    () => (snapshot ? JSON.parse(snapshot?.data()?.json) : []),
+    [snapshot]
+  );
+  const addFile = async () => {
+    if (workspaceId && liveCodingId) {
+      const fileCollectionPath = getLiveCodingFileCollectionPath(
+        workspaceId,
+        liveCodingId
+      );
+      const doc = await addDoc(collection(fireStore, fileCollectionPath), {
+        content: "",
+      });
+      return doc;
+    }
+    return Promise.resolve();
+  };
+  const saveRepository = async (repo: Repository) => {
+    if (workspaceId && liveCodingId && snapshot) {
+      await setDoc(snapshot.ref, { json: JSON.stringify(repo) });
+    }
+  };
+  return { repository, loading, error, addFile, saveRepository };
 }
