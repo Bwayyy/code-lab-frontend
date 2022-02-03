@@ -1,11 +1,11 @@
 import { Tabs } from "antd";
 import { FC } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { removeTab, setActiveTabKey } from "../../reducers/FileRepositorySlice";
+import { useSelector } from "react-redux";
+import useFileTabs from "../../hooks/file-directory/useFileTabs";
 import { RootState } from "../../store";
 const { TabPane } = Tabs;
 export const FileTabs: FC = () => {
-  const dispatch = useDispatch();
+  const { remove: removeTab, onTabClick } = useFileTabs();
   const files = useSelector(
     (state: RootState) => state.fileRepository.tabFiles
   );
@@ -14,21 +14,23 @@ export const FileTabs: FC = () => {
   );
   const onEdit = (targetKey: any, action: any) => {
     if (action === "remove") {
-      dispatch(removeTab(parseInt(targetKey)));
+      removeTab(parseInt(targetKey));
     }
   };
   return (
-    <Tabs
-      hideAdd
-      //   onChange={this.onChange}
-      activeKey={activeTabKey?.toString()}
-      onChange={(key) => dispatch(setActiveTabKey(parseInt(key)))}
-      type="editable-card"
-      onEdit={onEdit}
-    >
-      {files.map((file) => (
-        <TabPane key={file.key} tab={file.name} />
-      ))}
-    </Tabs>
+    <div style={{ minHeight: 32, backgroundColor: "grey" }}>
+      <Tabs
+        tabBarStyle={{ marginBottom: 0 }}
+        hideAdd
+        activeKey={activeTabKey ? activeTabKey.toString() : ""}
+        onChange={(key) => onTabClick(parseInt(key))}
+        type="editable-card"
+        onEdit={onEdit}
+      >
+        {files.map((file) => (
+          <TabPane key={file.key} tab={file.name} />
+        ))}
+      </Tabs>
+    </div>
   );
 };

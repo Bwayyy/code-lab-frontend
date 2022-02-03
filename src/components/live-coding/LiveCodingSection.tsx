@@ -1,6 +1,7 @@
 import { Col, Row } from "antd";
 import { FC } from "react";
 import { useParams } from "react-router-dom";
+import useFileTabs from "../../hooks/file-directory/useFileTabs";
 import CodeEditor from "./CodeEditor";
 import LiveUserList from "./LiveUserList";
 type LiveCodingSectionProps = {};

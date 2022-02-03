@@ -8,27 +8,24 @@ import {
 } from "../../types/file-repository-types";
 import { AiOutlineFileAdd, AiOutlineFolderAdd } from "react-icons/ai";
 import { useDispatch } from "react-redux";
-import {
-  addFileToTab,
-  setActiveTabKey,
-} from "../../reducers/FileRepositorySlice";
+import { setActiveTabKey } from "../../reducers/FileRepositorySlice";
 import { InputPopover } from "../common/atoms/InputPopover";
 import { KeyPressInput } from "../common/atoms/KeyPressInput";
+import useFileTabs from "../../hooks/file-directory/useFileTabs";
 const { DirectoryTree } = Tree;
 const FileDirectory: FC = () => {
-  const dispatch = useDispatch();
   const [rightClickKey, setRightClickKey] = useState<number>();
   const [renamingKey, setRenamingKey] = useState<number>();
   const [popoverVisible, setPopoverVisible] = useState(false);
   const [newEntityType, setNewEntityType] = useState<"file" | "folder">();
   const { root, add, rename, remove } = useFileTree();
   const [selectedNode, setSelectedNode] = useState<FileTreeNode>();
+  const { addFileToTab } = useFileTabs();
   const onSelect = (selectedKeysValue: Key[], info: any) => {
     const { key, name, fileId, children } = info.node;
     const repoFile: RepositoryFile = { key, name, fileId, children };
     if (fileId) {
-      dispatch(addFileToTab(repoFile));
-      dispatch(setActiveTabKey(repoFile.key));
+      addFileToTab(repoFile);
     }
     setSelectedNode(info.node);
   };

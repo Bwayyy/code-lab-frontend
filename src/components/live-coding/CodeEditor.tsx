@@ -11,9 +11,12 @@ import "codemirror/theme/material.css";
 import "codemirror/theme/neat.css";
 import "codemirror/mode/xml/xml.js";
 import "codemirror/mode/javascript/javascript.js";
+import useFileTabs from "../../hooks/file-directory/useFileTabs";
 const CodeEditor: FC = () => {
   const [editor, setEditor] = useState<any>();
   const { roomName } = useRoomName();
+  const { activeFile } = useFileTabs();
+
   const { doc, provider } = useCollaborativeEditing({
     room: roomName,
     text: "",
@@ -28,6 +31,7 @@ const CodeEditor: FC = () => {
       );
     }
   }, [doc, provider, editor]);
+  const readonly = activeFile === undefined;
   return (
     <Row style={{ width: "100%" }} gutter={[12, 0]}>
       <Col span={6}>
@@ -37,6 +41,7 @@ const CodeEditor: FC = () => {
         <FileTabs />
         <CodeMirror
           options={{
+            readOnly: readonly ? "nocursor" : false,
             mode: "xml",
             theme: "material",
             lineNumbers: true,
