@@ -11,7 +11,7 @@ import {
 import _ from "lodash";
 import { message } from "antd";
 export default function useFileTree() {
-  const { repository, loading, error, addFile, saveRepository } =
+  const { repository, loading, error, addFile, deleteFile, saveRepository } =
     useRepository();
   const [rootNode, setRootNode] = useState<FileTreeNode>({
     key: 0,
@@ -120,7 +120,21 @@ export default function useFileTree() {
     );
     saveToRepository();
   };
-  const remove = () => {};
+  const remove = (key: number, fileId: string) => {
+    deleteFile(fileId);
+    crawl(
+      rootNode,
+      (node, context) => {
+        if (node.key === key) {
+          context.parent?.children?.splice(context.index, 1);
+          context.remove();
+          context.break();
+        }
+      },
+      { getChildren }
+    );
+    saveToRepository();
+  };
 
   const rename = (key: number, name: string) => {
     crawl(

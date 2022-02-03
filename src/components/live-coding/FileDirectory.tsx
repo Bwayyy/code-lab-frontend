@@ -74,7 +74,7 @@ const FileDirectory: FC = () => {
         treeData={root.children}
         multiple={false}
         onSelect={onSelect}
-        titleRender={(node) => (
+        titleRender={(node: any) => (
           <Dropdown
             overlay={
               <Menu
@@ -86,11 +86,21 @@ const FileDirectory: FC = () => {
                 <Menu.Item
                   key="rename"
                   onClick={(e) => {
-                    setRenamingKey(node.key as number);
+                    setRenamingKey(node.key);
                     e.domEvent.stopPropagation();
                   }}
                 >
                   Rename
+                </Menu.Item>
+                <Menu.Item
+                  key="delete"
+                  onClick={(e) => {
+                    remove(node.key, node.fileId);
+                    e.domEvent.stopPropagation();
+                  }}
+                  danger
+                >
+                  Delete
                 </Menu.Item>
               </Menu>
             }
@@ -98,13 +108,13 @@ const FileDirectory: FC = () => {
             onVisibleChange={(visible) => {
               console.log({ visible });
               if (visible) {
-                setRightClickKey(node.key as number);
+                setRightClickKey(node.key);
               } else {
                 setRightClickKey(undefined);
               }
             }}
           >
-            {renamingKey === node.key ? (
+            {renamingKey && renamingKey === node.key ? (
               <KeyPressInput
                 style={{ width: "calc(100% - 20px)", height: 20 }}
                 destory={() => setRenamingKey(undefined)}

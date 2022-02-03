@@ -1,4 +1,4 @@
-import { addDoc, collection, doc, setDoc } from "firebase/firestore";
+import { addDoc, collection, deleteDoc, doc, setDoc } from "firebase/firestore";
 import { useMemo } from "react";
 import { useDocument, useDocumentData } from "react-firebase-hooks/firestore";
 import { useParams } from "react-router-dom";
@@ -34,10 +34,19 @@ export default function useRepository() {
     }
     return Promise.resolve();
   };
+  const deleteFile = async (fileId: string) => {
+    if (workspaceId && liveCodingId) {
+      const collectionPath = getLiveCodingFileCollectionPath(
+        workspaceId,
+        liveCodingId
+      );
+      await deleteDoc(doc(fireStore, collectionPath, fileId));
+    }
+  };
   const saveRepository = async (repo: Repository) => {
     if (workspaceId && liveCodingId && snapshot) {
       await setDoc(snapshot.ref, { json: JSON.stringify(repo) });
     }
   };
-  return { repository, loading, error, addFile, saveRepository };
+  return { repository, loading, error, addFile, saveRepository, deleteFile };
 }
