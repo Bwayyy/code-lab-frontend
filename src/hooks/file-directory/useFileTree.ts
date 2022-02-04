@@ -10,9 +10,11 @@ import {
 } from "../../types/file-repository-types";
 import _ from "lodash";
 import { message } from "antd";
+import useFileTabs from "./useFileTabs";
 export default function useFileTree() {
   const { repository, loading, error, addFile, deleteFile, saveRepository } =
     useRepository();
+  const { remove: removeTab } = useFileTabs();
   const [rootNode, setRootNode] = useState<FileTreeNode>({
     key: 0,
     name: "",
@@ -20,6 +22,19 @@ export default function useFileTree() {
   });
   const forceUpdateTree = () => {
     setRootNode({ ...rootNode, children: [...(rootNode.children ?? [])] });
+  };
+  const getNode = (key: number): FileTreeNode | undefined => {
+    let target;
+    crawl(
+      rootNode,
+      (node, context) => {
+        if (node.key === key) {
+          target = node;
+        }
+      },
+      { getChildren }
+    );
+    return target;
   };
   const getChildren = (node: FileTreeNode): FileTreeNode[] =>
     node.children ?? [];
@@ -120,8 +135,8 @@ export default function useFileTree() {
     );
     saveToRepository();
   };
-  const remove = (key: number, fileId: string) => {
-    deleteFile(fileId);
+  const remove = async (key: number, fileId: string) => {
+    await deleteFile(fileId);
     crawl(
       rootNode,
       (node, context) => {
@@ -133,6 +148,7 @@ export default function useFileTree() {
       },
       { getChildren }
     );
+    removeTab(key);
     saveToRepository();
   };
 
@@ -153,5 +169,5 @@ export default function useFileTree() {
     );
     saveToRepository();
   };
-  return { root: rootNode, add, remove, rename };
+  return { root: rootNode, add, remove, rename, getNode };
 }

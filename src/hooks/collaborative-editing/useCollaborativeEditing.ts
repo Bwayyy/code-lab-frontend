@@ -2,12 +2,7 @@ import { Y } from "@syncedstore/core";
 import { useEffect, useState } from "react";
 import { WebsocketProvider } from "y-websocket";
 import useUserData from "../useUserData";
-export default function useCollaborativeEditing({
-  room,
-}: {
-  room: string;
-  text: string;
-}) {
+export default function useCollaborativeEditing({ room }: { room: string }) {
   const [doc, setDoc] = useState<Y.Doc>();
   const [provider, setProvider] = useState<WebsocketProvider>();
   const { userData } = useUserData();

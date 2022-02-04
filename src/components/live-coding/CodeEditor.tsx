@@ -19,7 +19,6 @@ const CodeEditor: FC = () => {
 
   const { doc, provider } = useCollaborativeEditing({
     room: roomName,
-    text: "",
   });
   useEffect(() => {
     console.log({ doc, provider, editor });

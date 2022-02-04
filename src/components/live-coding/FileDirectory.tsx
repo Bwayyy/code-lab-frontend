@@ -1,33 +1,42 @@
-import { Button, Dropdown, Input, Menu, Popover, Row, Space, Tree } from "antd";
-import { FC, Key, useState } from "react";
-import { FileOutlined, FolderOutlined } from "@ant-design/icons";
+import { Button, Dropdown, Menu, Row, Tree } from "antd";
+import { FC, Key, useEffect, useState } from "react";
 import useFileTree from "../../hooks/file-directory/useFileTree";
 import {
   FileTreeNode,
   RepositoryFile,
 } from "../../types/file-repository-types";
 import { AiOutlineFileAdd, AiOutlineFolderAdd } from "react-icons/ai";
-import { useDispatch } from "react-redux";
-import { setActiveTabKey } from "../../reducers/FileRepositorySlice";
 import { InputPopover } from "../common/atoms/InputPopover";
 import { KeyPressInput } from "../common/atoms/KeyPressInput";
 import useFileTabs from "../../hooks/file-directory/useFileTabs";
+import { setActiveTabKey } from "../../reducers/FileRepositorySlice";
 const { DirectoryTree } = Tree;
 const FileDirectory: FC = () => {
   const [rightClickKey, setRightClickKey] = useState<number>();
   const [renamingKey, setRenamingKey] = useState<number>();
   const [popoverVisible, setPopoverVisible] = useState(false);
   const [newEntityType, setNewEntityType] = useState<"file" | "folder">();
-  const { root, add, rename, remove } = useFileTree();
+  const { root, add, rename, remove, getNode } = useFileTree();
+  const [selectedKey, setSelectedKey] = useState<number>(0);
   const [selectedNode, setSelectedNode] = useState<FileTreeNode>();
-  const { addFileToTab } = useFileTabs();
-  const onSelect = (selectedKeysValue: Key[], info: any) => {
+  const { activeFile, addFileToTab } = useFileTabs();
+  useEffect(() => {
+    if (activeFile) {
+      setSelectedKey(activeFile.key);
+      setSelectedNode(getNode(activeFile.key));
+    } else {
+      setSelectedKey(0);
+      setSelectedNode(undefined);
+    }
+  }, [activeFile]);
+  const onSelect = (_selectedKeysValue: Key[], info: any) => {
     const { key, name, fileId, children } = info.node;
     const repoFile: RepositoryFile = { key, name, fileId, children };
     if (fileId) {
       addFileToTab(repoFile);
     }
     setSelectedNode(info.node);
+    setSelectedKey(key);
   };
   const onAddNewItem = (name: string) => {
     let parent = selectedNode;
@@ -68,6 +77,7 @@ const FileDirectory: FC = () => {
         </InputPopover>
       </Row>
       <DirectoryTree
+        selectedKeys={[selectedKey]}
         treeData={root.children}
         multiple={false}
         onSelect={onSelect}
@@ -76,7 +86,6 @@ const FileDirectory: FC = () => {
             overlay={
               <Menu
                 onClick={() => {
-                  console.log("select");
                   setRightClickKey(undefined);
                 }}
               >
@@ -103,7 +112,6 @@ const FileDirectory: FC = () => {
             }
             trigger={["contextMenu"]}
             onVisibleChange={(visible) => {
-              console.log({ visible });
               if (visible) {
                 setRightClickKey(node.key);
               } else {
