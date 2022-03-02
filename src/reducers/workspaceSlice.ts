@@ -1,8 +1,9 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { Workspace } from "../types/workspace-types";
+import { Workspace, WorkspaceRole } from "../types/workspace-types";
 type InitialState = {
   workspaces: Workspace[];
   currentWorkspace?: Workspace;
+  roles?: WorkspaceRole[];
 };
 const initialState: InitialState = {
   workspaces: [],

@@ -1,20 +1,31 @@
 import React, { FC } from "react";
-import { Button, Menu } from "antd";
+import { Button, Menu, PageHeader, Typography } from "antd";
 import SubMenu from "antd/lib/menu/SubMenu";
 import { Header } from "antd/lib/layout/layout";
 import { Link } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { showLogin, showSignUp } from "../../reducers/globalSlice";
 import useUserData from "../../hooks/useUserData";
 import { AiOutlineUser } from "react-icons/ai";
 import useAuth from "../../hooks/useAuth";
 import { appPaths } from "../../utils/path";
+import { RootState } from "../../store";
 export const HeaderNavBar: FC = () => {
   const dispatch = useDispatch();
   const { isLoggedin, userData } = useUserData();
   const { signout } = useAuth();
   return (
     <Header style={{ backgroundColor: "#FFFFFF" }}>
+      <span
+        style={{
+          fontSize: 16,
+          fontWeight: "bold",
+          float: "left",
+          marginRight: 12,
+        }}
+      >
+        Code lab
+      </span>
       <Menu mode="horizontal">
         <Menu.Item>
           <Link to={appPaths.workspaces}>Workspaces</Link>

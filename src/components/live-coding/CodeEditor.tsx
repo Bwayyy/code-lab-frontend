@@ -12,16 +12,16 @@ import "codemirror/theme/neat.css";
 import "codemirror/mode/xml/xml.js";
 import "codemirror/mode/javascript/javascript.js";
 import useFileTabs from "../../hooks/file-directory/useFileTabs";
+import useCodeLanguage from "../../hooks/code-editor/useCodeLanguage";
 const CodeEditor: FC = () => {
   const [editor, setEditor] = useState<any>();
   const { roomName } = useRoomName();
   const { activeFile } = useFileTabs();
-
+  const language = useCodeLanguage(activeFile?.name);
   const { doc, provider } = useCollaborativeEditing({
     room: roomName,
   });
   useEffect(() => {
-    console.log({ doc, provider, editor });
     if (doc && provider && editor) {
       new CodeMirrorBinding(
         doc.getText("codemirror"),
@@ -41,7 +41,7 @@ const CodeEditor: FC = () => {
         <CodeMirror
           options={{
             readOnly: readonly ? "nocursor" : false,
-            mode: "xml",
+            mode: language,
             theme: "material",
             lineNumbers: true,
           }}

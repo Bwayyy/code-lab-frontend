@@ -1,8 +1,16 @@
 import { Timestamp } from "firebase/firestore";
-import { EntityBase } from "../components/common/shared-types";
+import { EntityBase, FirestoreEntity } from "../components/common/shared-types";
 
 export type Workspace = {
   createdAt: Timestamp;
   createdBy: string;
   description: string;
-} & EntityBase;
+} & EntityBase &
+  FirestoreEntity;
+
+export type WorkspaceRole = {
+  id: string;
+  role: "admin" | "normal";
+  userId: string;
+  workspaceId: string;
+} & FirestoreEntity;

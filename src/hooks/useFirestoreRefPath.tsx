@@ -11,5 +11,16 @@ export default function useFirestoreRefPath() {
   ) => {
     return `workspaces/${workspaceId}/liveCodings/${liveCodingId}/repository/0`;
   };
-  return { getLiveCodingFileCollectionPath, getLiveCodingRepoItemPath };
+  const getLiveCodingRepositoryCollectionPath = (liveCodingPath: string) => {
+    return `${liveCodingPath}/repository`;
+  };
+  const getLiveCodingCollectionPath = (workspacePath: string) => {
+    return workspacePath + "/liveCodings";
+  };
+  return {
+    getLiveCodingRepositoryCollectionPath,
+    getLiveCodingFileCollectionPath,
+    getLiveCodingRepoItemPath,
+    getLiveCodingCollectionPath,
+  };
 }
