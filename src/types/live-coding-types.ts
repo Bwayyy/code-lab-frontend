@@ -6,6 +6,11 @@ export type LiveCodingRoom = {
 } & EntityBase &
   FirestoreEntity;
 export type LiveCodingUser = {
-  userId: number;
+  userId: string;
   userName: string;
+  permission: UserRoomPerimission;
+  selfName?: string;
 };
+export type UserRoomPerimission = {
+  write: boolean;
+} & FirestoreEntity;

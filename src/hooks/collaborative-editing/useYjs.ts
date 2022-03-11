@@ -1,11 +1,18 @@
 import { Y } from "@syncedstore/core";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { WebsocketProvider } from "y-websocket";
 import useUserData from "../useUserData";
-export default function useCollaborativeEditing({ room }: { room: string }) {
+export default function useYjs({ room }: { room: string }) {
   const [doc, setDoc] = useState<Y.Doc>();
   const [provider, setProvider] = useState<WebsocketProvider>();
   const { userData } = useUserData();
+  const isReady = useMemo(
+    () =>
+      doc !== undefined &&
+      provider !== undefined &&
+      provider.awareness !== undefined,
+    [doc, provider]
+  );
   const initDocument = () => {
     const doc = new Y.Doc();
     setDoc(doc);
@@ -18,7 +25,6 @@ export default function useCollaborativeEditing({ room }: { room: string }) {
     setProvider(wsProvider);
     console.log("connected to", room);
   };
-
   useEffect(() => {
     if (!room) {
       provider?.destroy();
@@ -31,5 +37,5 @@ export default function useCollaborativeEditing({ room }: { room: string }) {
       console.log("leave room", room);
     };
   }, [room]);
-  return { doc, provider };
+  return { doc, provider, isReady };
 }

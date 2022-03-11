@@ -10,31 +10,34 @@ import {
 } from "antd";
 import { DocumentReference } from "firebase/firestore";
 import { FC } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import useLiveCodingCollection from "../../firebase/collections/useLiveCodingCollection";
-import useWorkspaceRoles from "../../firebase/collections/useWorkspaceRoles";
+import useWorkspaceRoleForUser from "../../firebase/collections/useWorkspaceRoleForUser";
 import useLiveCodingMutation from "../../hooks/live-coding/useLiveCodingMutation";
 import usePopup from "../../hooks/usePopup";
+import { setCurrentLiveCodingRoom } from "../../reducers/liveCodingSlice";
 import { RootState } from "../../store";
 import { LiveCodingRoom } from "../../types/live-coding-types";
 import { LiveCodingInfoDrawer } from "./LiveCodingInfoDrawer";
 
 export const Workspace: FC = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const liveCodingPopup = usePopup();
   const assementPopup = usePopup();
   const { id } = useParams();
   const workspace = useSelector(
     (state: RootState) => state.workspaces.currentWorkspace
   );
-  const { isAdmin } = useWorkspaceRoles(workspace?.id);
+  const { isAdmin } = useWorkspaceRoleForUser(workspace?.id);
   const { threads } = useLiveCodingCollection(id ?? "");
   const { remove } = useLiveCodingMutation();
   if (!workspace) {
     return <span>No Workspace Selected</span>;
   }
   const onEnterClick = (item: LiveCodingRoom) => {
+    dispatch(setCurrentLiveCodingRoom(item));
     navigate(`liveCoding/${item.id}`);
   };
   const onAddLiveCoding = () => {

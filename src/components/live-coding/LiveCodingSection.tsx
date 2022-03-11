@@ -1,23 +1,30 @@
-import { Col, Row } from "antd";
+import { Col, Row, Spin } from "antd";
 import { FC } from "react";
-import { useParams } from "react-router-dom";
-import useFileTabs from "../../hooks/file-directory/useFileTabs";
+import { PresenceProvider } from "y-presence";
+import useRoomName from "../../hooks/collaborative-editing/useRoomName";
+import useYjs from "../../hooks/collaborative-editing/useYjs";
 import CodeEditor from "./CodeEditor";
 import LiveUserList from "./LiveUserList";
-type LiveCodingSectionProps = {};
-export const LiveCodingSection: FC<LiveCodingSectionProps> = ({}) => {
-  const { workspaceId, liveCodingId } = useParams();
+export const LiveCodingSection: FC = () => {
+  const { roomName } = useRoomName();
+  const { doc, provider, isReady } = useYjs({ room: roomName });
   return (
-    <Row>
-      <Col span={4}>
-        <LiveUserList
-          workspaceId={workspaceId ?? ""}
-          liveCodingId={liveCodingId ?? ""}
-        />
-      </Col>
-      <Col span={20}>
-        <CodeEditor />
-      </Col>
-    </Row>
+    <Spin
+      spinning={!isReady}
+      tip="We are getting things ready for you! Please wait."
+    >
+      {isReady ? (
+        <PresenceProvider awareness={provider?.awareness}>
+          <Row>
+            <Col span={4}>
+              <LiveUserList doc={doc} provider={provider} />
+            </Col>
+            <Col span={20}>
+              <CodeEditor />
+            </Col>
+          </Row>
+        </PresenceProvider>
+      ) : null}
+    </Spin>
   );
 };

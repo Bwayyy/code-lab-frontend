@@ -1,6 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit";
 import fileRepositorySlice from "./reducers/FileRepositorySlice";
 import globalSlice from "./reducers/globalSlice";
+import liveCodingSlice from "./reducers/liveCodingSlice";
 import workspaceSlice from "./reducers/workspaceSlice";
 
 export const store = configureStore({
@@ -8,6 +9,7 @@ export const store = configureStore({
     global: globalSlice,
     workspaces: workspaceSlice,
     fileRepository: fileRepositorySlice,
+    liveCoding: liveCodingSlice,
   },
 });
 

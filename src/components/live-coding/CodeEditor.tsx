@@ -1,7 +1,7 @@
 import { FC, useEffect, useState } from "react";
 import { Col, Row } from "antd";
 import FileDirectory from "./FileDirectory";
-import useCollaborativeEditing from "../../hooks/collaborative-editing/useCollaborativeEditing";
+import useYjs from "../../hooks/collaborative-editing/useYjs";
 import { FileTabs } from "./FileTabs";
 import useRoomName from "../../hooks/collaborative-editing/useRoomName";
 import { UnControlled as CodeMirror } from "react-codemirror2";
@@ -15,12 +15,10 @@ import useFileTabs from "../../hooks/file-directory/useFileTabs";
 import useCodeLanguage from "../../hooks/code-editor/useCodeLanguage";
 const CodeEditor: FC = () => {
   const [editor, setEditor] = useState<any>();
-  const { roomName } = useRoomName();
   const { activeFile } = useFileTabs();
   const language = useCodeLanguage(activeFile?.name);
-  const { doc, provider } = useCollaborativeEditing({
-    room: roomName,
-  });
+  const { fileRoomName } = useRoomName();
+  const { doc, provider } = useYjs({ room: fileRoomName });
   useEffect(() => {
     if (doc && provider && editor) {
       new CodeMirrorBinding(
