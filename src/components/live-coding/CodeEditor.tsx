@@ -13,7 +13,10 @@ import "codemirror/mode/xml/xml.js";
 import "codemirror/mode/javascript/javascript.js";
 import useFileTabs from "../../hooks/file-directory/useFileTabs";
 import useCodeLanguage from "../../hooks/code-editor/useCodeLanguage";
-const CodeEditor: FC = () => {
+type CodeEditorProps = {
+  writePermission: boolean;
+};
+const CodeEditor: FC<CodeEditorProps> = ({ writePermission }) => {
   const [editor, setEditor] = useState<any>();
   const { activeFile } = useFileTabs();
   const language = useCodeLanguage(activeFile?.name);
@@ -28,7 +31,7 @@ const CodeEditor: FC = () => {
       );
     }
   }, [doc, provider, editor]);
-  const readonly = activeFile === undefined;
+  const readonly = !writePermission || activeFile === undefined;
   return (
     <Row style={{ width: "100%" }} gutter={[12, 0]}>
       <Col span={6}>
