@@ -23,7 +23,6 @@ export default function useYjs({ room }: { room: string }) {
     const wsProvider = new WebsocketProvider("ws://localhost:1234", room, doc);
     wsProvider.awareness.setLocalState({ username: userData?.username });
     setProvider(wsProvider);
-    console.log("connected to", room);
   };
   useEffect(() => {
     if (!room) {
@@ -34,7 +33,6 @@ export default function useYjs({ room }: { room: string }) {
     initProvider(doc);
     return () => {
       provider?.destroy();
-      console.log("leave room", room);
     };
   }, [room]);
   return { doc, provider, isReady };

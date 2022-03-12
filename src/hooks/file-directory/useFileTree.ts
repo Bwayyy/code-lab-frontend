@@ -82,7 +82,6 @@ export default function useFileTree() {
   }, [repository]);
 
   const getNodeTemplate = (type: "folder" | "file", name: string) => {
-    console.log({ name });
     return {
       key: new Date().getTime(),
       title: name,
@@ -91,7 +90,6 @@ export default function useFileTree() {
   };
   const saveToRepository = () => {
     const repositoryFiles = getRootNodeAsRepositoryFile();
-    console.log({ repositoryFiles });
     if (repositoryFiles.children !== undefined) {
       saveRepository(repositoryFiles.children ?? []);
     } else {

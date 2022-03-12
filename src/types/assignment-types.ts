@@ -1,8 +1,10 @@
 import { Timestamp } from "firebase/firestore";
-import { EntityBase } from "../components/common/shared-types";
+import { Moment } from "moment";
+import { EntityBase, FirestoreEntity } from "../components/common/shared-types";
 
 export type Assignment = {
-  deadline: Timestamp;
+  deadline: Timestamp | Moment;
   maxScore: number;
   objective: string;
-} & EntityBase;
+} & EntityBase &
+  FirestoreEntity;

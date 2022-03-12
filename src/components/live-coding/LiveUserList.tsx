@@ -19,7 +19,6 @@ const LiveUserList: FC<YjsProps> = ({ doc, provider }) => {
       setWritePermission(user.userId, checked);
     }
   };
-  console.log({ self, others });
   const uniqueOthers = useMemo(() => {
     const notEmpty = others.filter((x) => Object.keys(x).length !== 0 && x.id);
     return notEmpty as User<LiveCodingUser>[];

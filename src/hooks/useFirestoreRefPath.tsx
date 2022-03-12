@@ -14,6 +14,9 @@ export default function useFirestoreRefPath() {
   ) => {
     return `workspaces/${workspaceId}/liveCodings/${liveCodingId}/repository/0`;
   };
+  const getAssignmentPath = (workspaceId: string) => {
+    return `workspaces/${workspaceId}/assignments`;
+  };
   const getLiveCodingRepositoryCollectionPath = (liveCodingPath: string) => {
     return `${liveCodingPath}/repository`;
   };
@@ -24,6 +27,7 @@ export default function useFirestoreRefPath() {
     return liveCodingPath + "/userPermission";
   };
   return {
+    getAssignmentPath,
     getLiveCodingRepositoryCollectionPath,
     getLiveCodingFileCollectionPath,
     getLiveCodingRepoItemPath,

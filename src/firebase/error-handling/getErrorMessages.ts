@@ -1,7 +1,6 @@
 import { FirebaseError } from "firebase/app";
 
 export const getErrorMessages = (error: FirebaseError) => {
-  console.log({ error });
   if (error.code === "auth/email-already-in-use") {
     return "Email is already in use, please user another email";
   } else if (error.code === "auth/wrong-password") {

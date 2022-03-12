@@ -6,6 +6,9 @@ export default function usePopup() {
   const [visible, setVisible] = useState(false);
   const [action, setAction] = useState<"add" | "edit" | undefined>();
   const show = (action: "add" | "edit", data?: any) => {
+    if (action === "add") {
+      form.resetFields();
+    }
     setVisible(true);
     setAction(action);
     form.setFieldsValue(data);

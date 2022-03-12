@@ -27,7 +27,7 @@ export const KeyPressInput: FC<InputActionType> = ({
       onChange={(e) => setInput(e.target.value)}
       autoFocus
       onKeyDown={(e) => {
-        console.log({ key: e.key });
+        console.debug({ key: e.key });
         if (e.key === "Enter") {
           onFinish(input ?? "");
         } else if (e.key === "Escape") {
