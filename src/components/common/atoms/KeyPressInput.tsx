@@ -1,5 +1,4 @@
 import { Input } from "antd";
-import { initial } from "lodash";
 import { CSSProperties } from "react";
 import { FC, useEffect, useState } from "react";
 
@@ -27,7 +26,6 @@ export const KeyPressInput: FC<InputActionType> = ({
       onChange={(e) => setInput(e.target.value)}
       autoFocus
       onKeyDown={(e) => {
-        console.debug({ key: e.key });
         if (e.key === "Enter") {
           onFinish(input ?? "");
         } else if (e.key === "Escape") {

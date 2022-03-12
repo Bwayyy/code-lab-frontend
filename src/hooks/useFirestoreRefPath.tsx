@@ -26,6 +26,9 @@ export default function useFirestoreRefPath() {
   const getUserPermissionPath = (liveCodingPath: string) => {
     return liveCodingPath + "/userPermission";
   };
+  const getAssignmentSubmissionPath = (assignmentPath: string) => {
+    return assignmentPath + "/submission";
+  };
   return {
     getAssignmentPath,
     getLiveCodingRepositoryCollectionPath,
@@ -34,5 +37,6 @@ export default function useFirestoreRefPath() {
     getLiveCodingCollectionPath,
     getWorkspaceMemberRoleCollectionPath,
     getUserPermissionPath,
+    getAssignmentSubmissionPath,
   };
 }

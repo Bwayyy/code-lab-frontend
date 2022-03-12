@@ -8,3 +8,11 @@ export type Assignment = {
   objective: string;
 } & EntityBase &
   FirestoreEntity;
+
+export type AssignmentSubmission = {
+  id: string;
+  submitted_at: Timestamp;
+  folderPath: string;
+  graded?: boolean;
+  score: number;
+} & FirestoreEntity;

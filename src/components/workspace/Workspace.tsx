@@ -11,6 +11,7 @@ import {
   Typography,
 } from "antd";
 import { DocumentReference, Timestamp } from "firebase/firestore";
+import { Moment } from "moment";
 import { FC } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
@@ -20,6 +21,8 @@ import useAssignmentMutation from "../../hooks/assignments/useAssignmentMutation
 import useAssignments from "../../hooks/assignments/useAssignments";
 import useLiveCodingMutation from "../../hooks/live-coding/useLiveCodingMutation";
 import usePopup from "../../hooks/usePopup";
+import useMomentFormat from "../../hooks/utils/useMomentFormat";
+import { setCurrentAssignment } from "../../reducers/assignmentSlice";
 import { setCurrentLiveCodingRoom } from "../../reducers/liveCodingSlice";
 import { RootState } from "../../store";
 import { Assignment } from "../../types/assignment-types";
@@ -30,6 +33,7 @@ import { LiveCodingInfoDrawer } from "./LiveCodingInfoDrawer";
 export const Workspace: FC = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const { formatMoment } = useMomentFormat();
   const liveCodingPopup = usePopup();
   const assignmentPopup = usePopup();
   const { id } = useParams();
@@ -56,7 +60,10 @@ export const Workspace: FC = () => {
     message.success("The Live Coding Room is removed");
     liveCodingPopup.closePopup();
   };
-  const onEnterAssignmentClick = (item: Assignment) => {};
+  const onEnterAssignmentClick = (item: Assignment) => {
+    dispatch(setCurrentAssignment(item));
+    navigate(`assignment/${item.id}`);
+  };
   const onAddAssignment = () => {
     assignmentPopup.showPopup("add");
   };
@@ -185,10 +192,7 @@ export const Workspace: FC = () => {
                         </Col>
                         <Col md={12} xs={24}>
                           <Typography.Text strong>
-                            Deadline:{" "}
-                            {(item.deadline as Timestamp)
-                              .toDate()
-                              .toLocaleString()}
+                            Deadline: {formatMoment(item.deadline as Moment)}
                           </Typography.Text>
                         </Col>
                       </Row>
