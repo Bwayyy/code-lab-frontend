@@ -1,7 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import {
   LiveCodingRoom,
-  LiveCodingUser,
   UserRoomPerimission,
 } from "../types/live-coding-types";
 type InitialState = {

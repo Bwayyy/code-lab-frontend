@@ -1,8 +1,7 @@
 import { addDoc, collection, deleteDoc, doc, setDoc } from "firebase/firestore";
 import { useMemo } from "react";
-import { useDocument, useDocumentData } from "react-firebase-hooks/firestore";
+import { useDocument } from "react-firebase-hooks/firestore";
 import { useParams } from "react-router-dom";
-import { Snapshot } from "yjs";
 import useFirestoreRefPath from "../../hooks/useFirestoreRefPath";
 import { Repository } from "../../types/file-repository-types";
 import { fireStore } from "../firebaseApp";

@@ -13,7 +13,7 @@ export default function useAssignments() {
     (state: RootState) => state.workspaces.currentWorkspace
   );
   const { getAssignmentPath } = useFirestoreRefPath();
-  const [snapshot, loading, error] = useCollectionData(
+  const [snapshot] = useCollectionData(
     collection(fireStore, getAssignmentPath(workspace?.id ?? "")),
     { idField: "id", refField: "ref" }
   );

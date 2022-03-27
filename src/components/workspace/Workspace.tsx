@@ -10,7 +10,7 @@ import {
   Space,
   Typography,
 } from "antd";
-import { DocumentReference, Timestamp } from "firebase/firestore";
+import { DocumentReference } from "firebase/firestore";
 import { Moment } from "moment";
 import { FC } from "react";
 import { useDispatch, useSelector } from "react-redux";

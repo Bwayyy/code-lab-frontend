@@ -1,11 +1,9 @@
 import { Button, Card, Form, Input, Row } from "antd";
 import { useForm } from "antd/lib/form/Form";
 import { FC } from "react";
-import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
 export const LoginPage: FC = () => {
-  const dispatch = useDispatch();
   const [form] = useForm();
   const { signIn, loading } = useAuth();
   const onFinish = (values: any) => {

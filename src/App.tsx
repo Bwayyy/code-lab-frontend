@@ -20,7 +20,7 @@ function App() {
     } else {
       navigate(appPaths.login);
     }
-  }, []);
+  }, [isLoggedin, navigate]);
   return (
     <div className="App">
       <Routes>

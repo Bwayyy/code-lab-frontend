@@ -1,8 +1,5 @@
-import { ConfigContext } from "antd/lib/config-provider";
-import { TreeNode } from "antd/lib/tree-select";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import crawl from "tree-crawl";
-import { isForInStatement } from "typescript";
 import useRepository from "../../firebase/collections/useRepository";
 import {
   FileTreeNode,
@@ -12,8 +9,7 @@ import _ from "lodash";
 import { message } from "antd";
 import useFileTabs from "./useFileTabs";
 export default function useFileTree() {
-  const { repository, loading, error, addFile, deleteFile, saveRepository } =
-    useRepository();
+  const { repository, addFile, deleteFile, saveRepository } = useRepository();
   const { remove: removeTab } = useFileTabs();
   const [rootNode, setRootNode] = useState<FileTreeNode>({
     key: 0,

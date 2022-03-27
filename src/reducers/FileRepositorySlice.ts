@@ -1,5 +1,4 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { stat } from "fs";
 import { RepositoryFile } from "../types/file-repository-types";
 type InitialState = {
   tabFiles: RepositoryFile[];

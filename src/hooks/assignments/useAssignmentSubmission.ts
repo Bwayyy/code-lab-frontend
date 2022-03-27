@@ -19,7 +19,7 @@ export default function useAssignmentSubmission() {
     fireStore,
     getAssignmentSubmissionPath(assignment?.ref.path ?? "") + "/" + userData?.id
   );
-  const [value, loading, _error] = useDocumentData(submissionDocRef, {
+  const [value, loading] = useDocumentData(submissionDocRef, {
     idField: "id",
     refField: "ref",
   });

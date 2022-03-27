@@ -1,6 +1,6 @@
 import { initializeApp } from "firebase/app";
 import { browserSessionPersistence, getAuth } from "firebase/auth";
-import { Firestore, getFirestore } from "firebase/firestore";
+import { getFirestore } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
 const app = initializeApp({
   apiKey: process.env.REACT_APP_FIREBASE_API_KEY,

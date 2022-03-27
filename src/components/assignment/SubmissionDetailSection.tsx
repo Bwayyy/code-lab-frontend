@@ -1,5 +1,4 @@
 import { Button, Descriptions } from "antd";
-import { StorageReference } from "firebase/storage";
 import { FC, useMemo } from "react";
 import { useSelector } from "react-redux";
 import useAssignmentSubmissionFiles from "../../hooks/assignments/useAssignmentSubmissionFiles";

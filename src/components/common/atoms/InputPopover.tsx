@@ -1,5 +1,5 @@
-import { Input, Popover } from "antd";
-import { FC, useEffect, useState } from "react";
+import { Popover } from "antd";
+import { FC } from "react";
 import { InputActionType, KeyPressInput } from "./KeyPressInput";
 type InputPopoverProps = {
   visible: boolean;

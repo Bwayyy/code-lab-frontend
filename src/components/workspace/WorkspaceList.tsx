@@ -1,4 +1,4 @@
-import { Button, Col, Collapse, List, Row, Typography } from "antd";
+import { Button, Collapse, List } from "antd";
 import { FC } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";

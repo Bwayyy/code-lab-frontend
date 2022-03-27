@@ -9,7 +9,6 @@ import { AiOutlineFileAdd, AiOutlineFolderAdd } from "react-icons/ai";
 import { InputPopover } from "../common/atoms/InputPopover";
 import { KeyPressInput } from "../common/atoms/KeyPressInput";
 import useFileTabs from "../../hooks/file-directory/useFileTabs";
-import { setActiveTabKey } from "../../reducers/FileRepositorySlice";
 const { DirectoryTree } = Tree;
 const FileDirectory: FC = () => {
   const [rightClickKey, setRightClickKey] = useState<number>();

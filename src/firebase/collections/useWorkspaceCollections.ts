@@ -8,12 +8,10 @@ import { useDispatch } from "react-redux";
 import { Workspace, WorkspaceRole } from "../../types/workspace-types";
 import { setMemberships, setWorkspaces } from "../../reducers/workspaceSlice";
 import { fireStore } from "../firebaseApp";
-import useUserData from "../../hooks/useUserData";
 import useFirestoreRefPath from "../../hooks/useFirestoreRefPath";
 export default function useWorkspaceCollection() {
   const dispatch = useDispatch();
   const { getWorkspaceMemberCollectionPath } = useFirestoreRefPath();
-  const user = useUserData();
   const [memberRolesSnapshot] = useCollectionDataOnce(
     query(
       collection(fireStore, getWorkspaceMemberCollectionPath()),
