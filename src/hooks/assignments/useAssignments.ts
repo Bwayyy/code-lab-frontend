@@ -14,7 +14,7 @@ export default function useAssignments() {
   );
   const { getAssignmentPath } = useFirestoreRefPath();
   const [snapshot] = useCollectionData(
-    collection(fireStore, getAssignmentPath(workspace?.id ?? "")),
+    workspace ? collection(fireStore, getAssignmentPath(workspace.id)) : null,
     { idField: "id", refField: "ref" }
   );
   const assignments = useMemo(

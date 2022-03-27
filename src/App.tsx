@@ -11,16 +11,16 @@ import { LiveCodingSection } from "./components/live-coding/LiveCodingSection";
 import { RegisterPage } from "./components/common/RegisterPage";
 import { AssignmentDetailPage } from "./components/assignment/AssignmentDetailPage";
 import { AssignmentGradingPage } from "./components/assignment/AssignmentGradingPage";
+import useInitReduxStoreFromURL from "./hooks/useInitReduxStoreFromURL";
 function App() {
   const { isLoggedin } = useUserData();
   const navigate = useNavigate();
   useEffect(() => {
-    if (isLoggedin) {
-      navigate(appPaths.workspaces);
-    } else {
+    if (!isLoggedin) {
       navigate(appPaths.login);
     }
-  }, [isLoggedin, navigate]);
+  }, [isLoggedin]);
+  useInitReduxStoreFromURL();
   return (
     <div className="App">
       <Routes>
