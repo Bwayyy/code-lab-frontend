@@ -1,6 +1,6 @@
 export default function useFirestoreRefPath() {
-  const getWorkspaceMemberRoleCollectionPath = (workspaceId: string) => {
-    return `workspaces/${workspaceId}/memberRoles`;
+  const getWorkspaceMemberCollectionPath = () => {
+    return `workspace_members`;
   };
   const getLiveCodingFileCollectionPath = (
     workspaceId: string,
@@ -27,7 +27,7 @@ export default function useFirestoreRefPath() {
     return liveCodingPath + "/userPermission";
   };
   const getAssignmentSubmissionPath = (assignmentPath: string) => {
-    return assignmentPath + "/submission";
+    return assignmentPath + "/submissions";
   };
   return {
     getAssignmentPath,
@@ -35,7 +35,7 @@ export default function useFirestoreRefPath() {
     getLiveCodingFileCollectionPath,
     getLiveCodingRepoItemPath,
     getLiveCodingCollectionPath,
-    getWorkspaceMemberRoleCollectionPath,
+    getWorkspaceMemberCollectionPath,
     getUserPermissionPath,
     getAssignmentSubmissionPath,
   };

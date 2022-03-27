@@ -2,18 +2,23 @@ import { Col, List, Row, Switch } from "antd";
 import Avatar from "antd/lib/avatar/avatar";
 import { FC, useMemo } from "react";
 import { AiOutlineUser } from "react-icons/ai";
+import { useSelector } from "react-redux";
 import { User } from "y-presence";
 import { WebsocketProvider } from "y-websocket";
 import { Doc } from "yjs";
 import useLiveCodingUsers from "../../hooks/collaborative-editing/useLiveCodingUsers";
 import useUserRoomPermissionMutation from "../../hooks/live-coding/useUserRoomPermissionMutation";
-import useUserRoleForWorkspace from "../../hooks/workspace/useUserRoleForWorkspace";
+import useWorkspaceRoleForUser from "../../hooks/workspace/useWorkspaceRoleForUser";
+import { RootState } from "../../store";
 import { LiveCodingUser } from "../../types/live-coding-types";
 export type YjsProps = { doc?: Doc; provider?: WebsocketProvider };
 const LiveUserList: FC<YjsProps> = ({ doc, provider }) => {
   const { self, others } = useLiveCodingUsers(provider?.awareness);
   const { setWritePermission } = useUserRoomPermissionMutation();
-  const { isAdmin } = useUserRoleForWorkspace();
+  const workspace = useSelector(
+    (state: RootState) => state.workspaces.currentWorkspace
+  );
+  const { isAdmin } = useWorkspaceRoleForUser(workspace?.id);
   const onWritePermissionChange = (checked: boolean, user?: LiveCodingUser) => {
     if (user) {
       setWritePermission(user.userId, checked);

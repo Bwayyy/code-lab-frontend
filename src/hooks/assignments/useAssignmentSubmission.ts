@@ -1,9 +1,8 @@
 import { doc } from "firebase/firestore";
-import { listAll, ref, StorageReference } from "firebase/storage";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo } from "react";
 import { useDocumentData } from "react-firebase-hooks/firestore";
 import { useSelector } from "react-redux";
-import { firebaseStorage, fireStore } from "../../firebase/firebaseApp";
+import { fireStore } from "../../firebase/firebaseApp";
 import { RootState } from "../../store";
 import { AssignmentSubmission } from "../../types/assignment-types";
 import useFirestoreRefPath from "../useFirestoreRefPath";
@@ -12,9 +11,7 @@ import useUserData from "../useUserData";
 export default function useAssignmentSubmission() {
   const { getAssignmentSubmissionPath } = useFirestoreRefPath();
   const { userData } = useUserData();
-  const [submissionFiles, setSubmissionFiles] = useState<StorageReference[]>(
-    []
-  );
+
   const assignment = useSelector(
     (state: RootState) => state.assignments.currentAssignment
   );
@@ -36,20 +33,11 @@ export default function useAssignmentSubmission() {
             graded: value.graded,
             score: value.score,
             submitted_at: value.submitted_at,
+            userName: value.userName,
           }
         : undefined,
     [value]
   );
-  useEffect(() => {
-    const getFiles = async () => {
-      if (submission?.folderPath) {
-        const folderRef = ref(firebaseStorage, submission?.folderPath);
-        const listAllResult = await listAll(folderRef);
-        setSubmissionFiles(listAllResult.items);
-      }
-    };
-    getFiles();
-  }, [submission?.folderPath]);
 
-  return { submission, loading, submissionFiles };
+  return { submission, loading };
 }

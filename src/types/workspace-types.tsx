@@ -12,4 +12,5 @@ export type WorkspaceRole = {
   id: string;
   role: "admin" | "normal";
   userId: string;
+  workspaceId: string;
 } & FirestoreEntity;

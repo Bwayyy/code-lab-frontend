@@ -1,20 +1,60 @@
-import { collection, query } from "firebase/firestore";
-import { useEffect } from "react";
-import { useCollectionDataOnce } from "react-firebase-hooks/firestore";
+import { collection, documentId, query, where } from "firebase/firestore";
+import { useEffect, useMemo } from "react";
+import {
+  useCollectionData,
+  useCollectionDataOnce,
+} from "react-firebase-hooks/firestore";
 import { useDispatch } from "react-redux";
-import { Workspace } from "../../types/workspace-types";
-import { setWorkspaces } from "../../reducers/workspaceSlice";
+import { Workspace, WorkspaceRole } from "../../types/workspace-types";
+import { setMemberships, setWorkspaces } from "../../reducers/workspaceSlice";
 import { fireStore } from "../firebaseApp";
+import useUserData from "../../hooks/useUserData";
+import useFirestoreRefPath from "../../hooks/useFirestoreRefPath";
 export default function useWorkspaceCollection() {
   const dispatch = useDispatch();
-  const [snapshot, loading, error] = useCollectionDataOnce(
-    query(collection(fireStore, "workspaces")),
+  const { getWorkspaceMemberCollectionPath } = useFirestoreRefPath();
+  const user = useUserData();
+  const [memberRolesSnapshot] = useCollectionDataOnce(
+    query(
+      collection(fireStore, getWorkspaceMemberCollectionPath()),
+      where("userId", "==", "xbaSSccTHVWVbAWuZc9zPg08pyl2")
+    ),
     {
       idField: "id",
       refField: "ref",
     }
   );
-  const workspaces = snapshot?.map(
+  const workspacesIds = useMemo(
+    () => memberRolesSnapshot?.map((x) => x.workspaceId),
+    [memberRolesSnapshot]
+  );
+  const [workspacesSnapshot] = useCollectionData(
+    workspacesIds
+      ? query(
+          collection(fireStore, "workspaces"),
+          where(documentId(), "in", workspacesIds)
+        )
+      : null,
+    {
+      idField: "id",
+      refField: "ref",
+    }
+  );
+  const memeberships = memberRolesSnapshot?.map((x) => {
+    return {
+      id: x.id,
+      role: x.role,
+      userId: x.userId,
+      workspaceId: x.workspaceId,
+      ref: x.ref,
+    } as WorkspaceRole;
+  });
+  useEffect(() => {
+    if (memeberships) {
+      dispatch(setMemberships(memeberships));
+    }
+  }, [memeberships]);
+  const workspaces = workspacesSnapshot?.map(
     (x) =>
       ({
         createdAt: x.createdAt,
@@ -32,7 +72,6 @@ export default function useWorkspaceCollection() {
   }, [workspaces]);
   return {
     workspaces,
-    loading,
-    error,
+    memeberships,
   };
 }

@@ -10,6 +10,7 @@ import { appPaths } from "./utils/path";
 import { LiveCodingSection } from "./components/live-coding/LiveCodingSection";
 import { RegisterPage } from "./components/common/RegisterPage";
 import { AssignmentDetailPage } from "./components/assignment/AssignmentDetailPage";
+import { AssignmentGradingPage } from "./components/assignment/AssignmentGradingPage";
 function App() {
   const { isLoggedin } = useUserData();
   const navigate = useNavigate();
@@ -54,6 +55,14 @@ function App() {
           element={
             <LoggedInPageLayout>
               <AssignmentDetailPage></AssignmentDetailPage>
+            </LoggedInPageLayout>
+          }
+        />
+        <Route
+          path={appPaths.assignmentGrading}
+          element={
+            <LoggedInPageLayout>
+              <AssignmentGradingPage></AssignmentGradingPage>
             </LoggedInPageLayout>
           }
         />

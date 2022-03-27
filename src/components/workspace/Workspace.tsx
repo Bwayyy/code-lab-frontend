@@ -16,12 +16,12 @@ import { FC } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import useLiveCodingCollection from "../../firebase/collections/useLiveCodingCollection";
-import useWorkspaceRoleForUser from "../../firebase/collections/useWorkspaceRoleForUser";
 import useAssignmentMutation from "../../hooks/assignments/useAssignmentMutation";
 import useAssignments from "../../hooks/assignments/useAssignments";
 import useLiveCodingMutation from "../../hooks/live-coding/useLiveCodingMutation";
 import usePopup from "../../hooks/usePopup";
 import useMomentFormat from "../../hooks/utils/useMomentFormat";
+import useWorkspaceRoleForUser from "../../hooks/workspace/useWorkspaceRoleForUser";
 import { setCurrentAssignment } from "../../reducers/assignmentSlice";
 import { setCurrentLiveCodingRoom } from "../../reducers/liveCodingSlice";
 import { RootState } from "../../store";
@@ -62,7 +62,11 @@ export const Workspace: FC = () => {
   };
   const onEnterAssignmentClick = (item: Assignment) => {
     dispatch(setCurrentAssignment(item));
-    navigate(`assignment/${item.id}`);
+    if (isAdmin) {
+      navigate(`assignment/grading/${item.id}`);
+    } else {
+      navigate(`assignment/${item.id}`);
+    }
   };
   const onAddAssignment = () => {
     assignmentPopup.showPopup("add");
@@ -71,7 +75,6 @@ export const Workspace: FC = () => {
     await removeAssignment(ref);
     message.success("The Assignment is removed");
   };
-
   return (
     <>
       <Space direction="vertical" style={{ width: "100%" }}>
@@ -94,28 +97,32 @@ export const Workspace: FC = () => {
                   return (
                     <List.Item
                       actions={[
-                        <Button
-                          onClick={() =>
-                            liveCodingPopup.showPopup("edit", item)
-                          }
-                          disabled={!isAdmin}
-                        >
-                          Edit
-                        </Button>,
+                        isAdmin ? (
+                          <Button
+                            onClick={() =>
+                              liveCodingPopup.showPopup("edit", item)
+                            }
+                            disabled={!isAdmin}
+                          >
+                            Edit
+                          </Button>
+                        ) : null,
                         <Button
                           type="primary"
                           onClick={() => onEnterRoomClick(item)}
                         >
                           Enter
                         </Button>,
-                        <Popconfirm
-                          title="Are you sure?"
-                          onConfirm={() => onRemoveLiveCoding(item.ref)}
-                        >
-                          <Button danger type="primary">
-                            Close
-                          </Button>
-                        </Popconfirm>,
+                        isAdmin ? (
+                          <Popconfirm
+                            title="Are you sure?"
+                            onConfirm={() => onRemoveLiveCoding(item.ref)}
+                          >
+                            <Button danger type="primary" disabled={!isAdmin}>
+                              Close
+                            </Button>
+                          </Popconfirm>
+                        ) : null,
                       ]}
                     >
                       <List.Item.Meta
@@ -146,28 +153,31 @@ export const Workspace: FC = () => {
                   return (
                     <List.Item
                       actions={[
-                        <Button
-                          onClick={() =>
-                            assignmentPopup.showPopup("edit", item)
-                          }
-                          disabled={!isAdmin}
-                        >
-                          Edit
-                        </Button>,
+                        isAdmin ? (
+                          <Button
+                            onClick={() =>
+                              assignmentPopup.showPopup("edit", item)
+                            }
+                          >
+                            Edit
+                          </Button>
+                        ) : null,
                         <Button
                           type="primary"
                           onClick={() => onEnterAssignmentClick(item)}
                         >
-                          Enter
+                          {isAdmin ? "View & Grade" : "Detail"}
                         </Button>,
-                        <Popconfirm
-                          title="Are you sure?"
-                          onConfirm={() => onRemoveAssignment(item.ref)}
-                        >
-                          <Button danger type="primary">
-                            Close
-                          </Button>
-                        </Popconfirm>,
+                        isAdmin ? (
+                          <Popconfirm
+                            title="Are you sure?"
+                            onConfirm={() => onRemoveAssignment(item.ref)}
+                          >
+                            <Button danger type="primary">
+                              Close
+                            </Button>
+                          </Popconfirm>
+                        ) : null,
                       ]}
                     >
                       <Row

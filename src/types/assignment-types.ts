@@ -11,6 +11,7 @@ export type Assignment = {
 
 export type AssignmentSubmission = {
   id: string;
+  userName: string;
   submitted_at: Timestamp;
   folderPath: string;
   graded?: boolean;
