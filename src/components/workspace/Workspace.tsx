@@ -2,10 +2,12 @@ import {
   Button,
   Col,
   Divider,
+  Input,
   List,
   message,
   PageHeader,
   Popconfirm,
+  Popover,
   Row,
   Space,
   Typography,
@@ -13,6 +15,7 @@ import {
 import { DocumentReference } from "firebase/firestore";
 import { Moment } from "moment";
 import { FC } from "react";
+import { AiOutlineUserAdd } from "react-icons/ai";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import useLiveCodingCollection from "../../firebase/collections/useLiveCodingCollection";
@@ -29,6 +32,8 @@ import { Assignment } from "../../types/assignment-types";
 import { LiveCodingRoom } from "../../types/live-coding-types";
 import { AssignemntInfoDrawer } from "./AssignmentInfoDrawer";
 import { LiveCodingInfoDrawer } from "./LiveCodingInfoDrawer";
+import { UserAddOutlined } from "@ant-design/icons";
+import InviteLinkPopover from "./InviteLinkPopover";
 
 export const Workspace: FC = () => {
   const navigate = useNavigate();
@@ -78,7 +83,10 @@ export const Workspace: FC = () => {
   return (
     <>
       <Space direction="vertical" style={{ width: "100%" }}>
-        <PageHeader title={workspace.name} />
+        <PageHeader
+          title={workspace.name}
+          extra={<InviteLinkPopover workspaceId={workspace.id} />}
+        />
         <Row>
           <Col span={11}>
             <PageHeader

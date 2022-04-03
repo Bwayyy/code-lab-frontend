@@ -7,4 +7,5 @@ export const appPaths = {
   assignmentDetail: "/workspaces/:workspaceId/assignment/:assignmentId",
   assignmentGrading:
     "/workspaces/:workspaceId/assignment/grading/:assignmentId",
+  workspaceInvitation: "/join/:workspaceId",
 };

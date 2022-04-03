@@ -23,18 +23,16 @@ export default function useAuth() {
             email: user.email ?? "",
           })
         );
-      } else {
-        navigate(appPaths.login);
       }
     });
     return unsubscribe;
   }, [dispatch]);
-  const signIn = async ({ email, password }: any) => {
+  const signIn = async ({ email, password }: any, callback?: () => void) => {
     setloading(true);
     return signInWithEmailAndPassword(auth, email, password)
       .then(() => {
         setloading(false);
-        navigate(appPaths.workspaces);
+        callback?.();
       })
       .catch((err: FirebaseError) => {
         setloading(false);

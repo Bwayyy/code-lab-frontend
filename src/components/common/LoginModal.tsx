@@ -1,13 +1,11 @@
 import { Form, Input, Modal } from "antd";
 import { useForm } from "antd/lib/form/Form";
 import { FC } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import useAuth from "../../hooks/useAuth";
 import { closeLogin } from "../../reducers/globalSlice";
-import { RootState } from "../../store";
 export const LoginModal: FC = () => {
   const dispatch = useDispatch();
-  const visible = useSelector((state: RootState) => state.global.loginVisible);
   const [form] = useForm();
   const { signIn, loading } = useAuth();
   const onFinish = (values: any) => {
@@ -16,7 +14,7 @@ export const LoginModal: FC = () => {
   return (
     <Modal
       maskClosable={false}
-      visible={visible}
+      visible={true}
       onCancel={() => {
         dispatch(closeLogin());
       }}
