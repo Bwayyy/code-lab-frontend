@@ -19,15 +19,15 @@ const FileDirectory: FC = () => {
   const [selectedKey, setSelectedKey] = useState<number>(0);
   const [selectedNode, setSelectedNode] = useState<FileTreeNode>();
   const { activeFile, addFileToTab } = useFileTabs();
-  useEffect(() => {
-    if (activeFile) {
-      setSelectedKey(activeFile.key);
-      setSelectedNode(getNode(activeFile.key));
-    } else {
-      setSelectedKey(0);
-      setSelectedNode(undefined);
-    }
-  }, [activeFile]);
+  // useEffect(() => {
+  //   if (activeFile) {
+  //     setSelectedKey(activeFile.key);
+  //     setSelectedNode(getNode(activeFile.key));
+  //   } else {
+  //     setSelectedKey(0);
+  //     setSelectedNode(undefined);
+  //   }
+  // }, [activeFile]);
   const onSelect = (_selectedKeysValue: Key[], info: any) => {
     const { key, name, fileId, children } = info.node;
     const repoFile: RepositoryFile = { key, name, fileId, children };

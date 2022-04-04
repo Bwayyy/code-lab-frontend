@@ -9,11 +9,17 @@ import { LiveCodingSection } from "./components/live-coding/LiveCodingSection";
 import { RegisterPage } from "./components/common/RegisterPage";
 import { AssignmentDetailPage } from "./components/assignment/AssignmentDetailPage";
 import { AssignmentGradingPage } from "./components/assignment/AssignmentGradingPage";
-import useInitReduxStoreFromURL from "./hooks/useInitReduxStoreFromURL";
 import InvitationPage from "./components/workspace/InvitationPage";
 import { AskForLogin } from "./components/common/AskForLogin";
+import { Spin } from "antd";
+import { LoadingOutlined } from "@ant-design/icons";
+import useSyncStateWithURL from "./hooks/useSyncStateWithURL";
 function App() {
-  useInitReduxStoreFromURL();
+  // const { synced } = useSyncStateWithURL();
+  // if (!synced)
+  //   return (
+  //     <Spin indicator={<LoadingOutlined style={{ fontSize: 24 }} spin />} />
+  //   );
   return (
     <div className="App">
       <Routes>
@@ -22,41 +28,51 @@ function App() {
         <Route
           path={appPaths.workspaces}
           element={
-            <LoggedInPageLayout>
-              <WorkspaceList />
-            </LoggedInPageLayout>
+            <AskForLogin>
+              <LoggedInPageLayout>
+                <WorkspaceList />
+              </LoggedInPageLayout>
+            </AskForLogin>
           }
         ></Route>
         <Route
           path={appPaths.workspaceDetail}
           element={
-            <LoggedInPageLayout>
-              <Workspace />
-            </LoggedInPageLayout>
+            <AskForLogin>
+              <LoggedInPageLayout>
+                <Workspace />
+              </LoggedInPageLayout>
+            </AskForLogin>
           }
         ></Route>
         <Route
           path={appPaths.liveCoding}
           element={
-            <LoggedInPageLayout>
-              <LiveCodingSection />
-            </LoggedInPageLayout>
+            <AskForLogin>
+              <LoggedInPageLayout>
+                <LiveCodingSection />
+              </LoggedInPageLayout>
+            </AskForLogin>
           }
         ></Route>
         <Route
           path={appPaths.assignmentDetail}
           element={
-            <LoggedInPageLayout>
-              <AssignmentDetailPage></AssignmentDetailPage>
-            </LoggedInPageLayout>
+            <AskForLogin>
+              <LoggedInPageLayout>
+                <AssignmentDetailPage></AssignmentDetailPage>
+              </LoggedInPageLayout>
+            </AskForLogin>
           }
         />
         <Route
           path={appPaths.assignmentGrading}
           element={
-            <LoggedInPageLayout>
-              <AssignmentGradingPage></AssignmentGradingPage>
-            </LoggedInPageLayout>
+            <AskForLogin>
+              <LoggedInPageLayout>
+                <AssignmentGradingPage></AssignmentGradingPage>
+              </LoggedInPageLayout>
+            </AskForLogin>
           }
         />
         <Route

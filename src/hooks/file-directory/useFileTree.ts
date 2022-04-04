@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import crawl from "tree-crawl";
-import useRepository from "../../firebase/collections/useRepository";
 import {
   FileTreeNode,
   RepositoryFile,
@@ -8,6 +7,7 @@ import {
 import _ from "lodash";
 import { message } from "antd";
 import useFileTabs from "./useFileTabs";
+import useRepository from "./useRepository";
 export default function useFileTree() {
   const { repository, addFile, deleteFile, saveRepository } = useRepository();
   const { remove: removeTab } = useFileTabs();

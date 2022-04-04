@@ -12,7 +12,8 @@ import {
 import moment, { Moment } from "moment";
 import { FC, useState } from "react";
 import { useSelector } from "react-redux";
-import useAssignmentSubmissionList from "../../hooks/assignments/admin/useAssignmentSubmissionList";
+import { useParams } from "react-router-dom";
+import { useAssignmentSubmissionsQuery } from "../../firebase/database/assignment-collection";
 import usePopup from "../../hooks/usePopup";
 import useMomentFormat from "../../hooks/utils/useMomentFormat";
 import { RootState } from "../../store";
@@ -20,7 +21,12 @@ import { AssignmentSubmission } from "../../types/assignment-types";
 import { SubmissionDetailSection } from "./SubmissionDetailSection";
 
 export const AssignmentGradingPage: FC = () => {
-  const { submissions } = useAssignmentSubmissionList();
+  const { workspaceId, assignmentId } = useParams();
+  console.log(workspaceId, assignmentId);
+  const { submissions } = useAssignmentSubmissionsQuery({
+    workspaceId,
+    assignmentId,
+  });
   const { formatTimeStamp } = useMomentFormat();
   const { showPopup, visible, closePopup } = usePopup();
   const [submission, setSubmission] = useState<AssignmentSubmission>();

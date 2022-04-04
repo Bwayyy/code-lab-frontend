@@ -14,3 +14,8 @@ export type WorkspaceRole = {
   userId: string;
   workspaceId: string;
 } & FirestoreEntity;
+
+export type WorkspaceAndMembership = {
+  workspace: Workspace;
+  membership: WorkspaceRole;
+};

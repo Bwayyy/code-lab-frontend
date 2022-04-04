@@ -2,23 +2,28 @@ import { Button, Collapse, List } from "antd";
 import { FC } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import useWorkspaceCollection from "../../firebase/collections/useWorkspaceCollections";
-import { setCurrentWorkspace } from "../../reducers/workspaceSlice";
-import { Workspace } from "../../types/workspace-types";
+import useWorkspacesForUser from "../../hooks/workspace/useWorkspacesForUser";
+import {
+  setCurrentMembership,
+  setCurrentWorkspace,
+} from "../../reducers/workspaceSlice";
+import { WorkspaceAndMembership } from "../../types/workspace-types";
 export const WorkspaceList: FC = () => {
-  const { workspaces } = useWorkspaceCollection();
+  const { workspaces, loading } = useWorkspacesForUser();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const onEnterClick = (item: Workspace) => {
-    navigate(item.id);
-    dispatch(setCurrentWorkspace(item));
+  const onEnterClick = (item: WorkspaceAndMembership) => {
+    navigate(item.workspace.id);
+    dispatch(setCurrentWorkspace(item.workspace));
+    dispatch(setCurrentMembership(item.membership));
   };
   return (
     <Collapse>
       <Collapse.Panel key="1" header="Own Workspaces">
         <List
-          dataSource={workspaces}
-          renderItem={(item: Workspace) => {
+          loading={loading}
+          dataSource={workspaces?.filter((x) => x.membership?.role === "admin")}
+          renderItem={(item) => {
             return (
               <List.Item
                 actions={[
@@ -28,8 +33,8 @@ export const WorkspaceList: FC = () => {
                 ]}
               >
                 <List.Item.Meta
-                  title={item.name}
-                  description={item.description}
+                  title={item.workspace.name}
+                  description={item.workspace.description}
                 />
               </List.Item>
             );
@@ -37,16 +42,28 @@ export const WorkspaceList: FC = () => {
         ></List>
       </Collapse.Panel>
       <Collapse.Panel key="2" header="Joined Workspaces">
-        {/* <List
-          dataSource={joinedWorkspaces}
+        <List
+          loading={loading}
+          dataSource={workspaces?.filter(
+            (x) => x.membership?.role === "normal"
+          )}
           renderItem={(item) => {
             return (
-              <List.Item>
-                <List.Item.Meta title={item.name} description={item.desc} />
+              <List.Item
+                actions={[
+                  <Button type="primary" onClick={() => onEnterClick(item)}>
+                    Enter
+                  </Button>,
+                ]}
+              >
+                <List.Item.Meta
+                  title={item.workspace.name}
+                  description={item.workspace.description}
+                />
               </List.Item>
             );
           }}
-        ></List> */}
+        ></List>
       </Collapse.Panel>
     </Collapse>
   );

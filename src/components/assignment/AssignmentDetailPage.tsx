@@ -3,22 +3,31 @@ import { Moment } from "moment";
 import { FC } from "react";
 import { AiOutlineUpload } from "react-icons/ai";
 import { useSelector } from "react-redux";
-import useAssignmentSubmission from "../../hooks/assignments/useAssignmentSubmission";
+import { useParams } from "react-router-dom";
+import {
+  useAssignmentDocByIdQuery,
+  useSubmissionDocByIdQuery,
+} from "../../firebase/database/assignment-collection";
+import { useWorkspaceDocQuery } from "../../firebase/database/workspace-collection";
 import useAssignmentUpload from "../../hooks/assignments/useAssignmentUpload";
+import useUserData from "../../hooks/useUserData";
 import useMomentFormat from "../../hooks/utils/useMomentFormat";
-import { RootState } from "../../store";
 import { SubmissionDetailSection } from "./SubmissionDetailSection";
 
 export const AssignmentDetailPage: FC = () => {
-  const workspace = useSelector(
-    (state: RootState) => state.workspaces.currentWorkspace
-  );
-  const assignment = useSelector(
-    (state: RootState) => state.assignments.currentAssignment
-  );
+  const { workspaceId, assignmentId } = useParams();
   const { files, setFiles, submitFiles } = useAssignmentUpload();
-  const { submission } = useAssignmentSubmission();
+  const { userData } = useUserData();
+  const { workspace } = useWorkspaceDocQuery(workspaceId);
+  const { submission } = useSubmissionDocByIdQuery(
+    { workspaceId, assignmentId },
+    userData.id
+  );
   const { formatMoment } = useMomentFormat();
+  const { assignment } = useAssignmentDocByIdQuery({
+    workspaceId,
+    assignmentId,
+  });
   return assignment ? (
     <PageHeader
       title={

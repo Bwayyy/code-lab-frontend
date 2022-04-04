@@ -1,4 +1,7 @@
 export default function useFirestoreRefPath() {
+  const getWorkspaceDocPath = (workspaceId: string) => {
+    return "workspaces/" + workspaceId;
+  };
   const getWorkspaceMemberCollectionPath = () => {
     return `workspace_members`;
   };
@@ -17,8 +20,20 @@ export default function useFirestoreRefPath() {
   const getAssignmentPath = (workspaceId: string) => {
     return `workspaces/${workspaceId}/assignments`;
   };
+  const getAssignmentDocPath = (
+    workspacePath: string,
+    assignmentId: string
+  ) => {
+    return workspacePath + "/assignments/" + assignmentId;
+  };
   const getLiveCodingRepositoryCollectionPath = (liveCodingPath: string) => {
     return `${liveCodingPath}/repository`;
+  };
+  const getLiveCodingDocPath = (
+    workspacePath: string,
+    liveCodingId: string
+  ) => {
+    return workspacePath + "/liveCodings/" + liveCodingId;
   };
   const getLiveCodingCollectionPath = (workspacePath: string) => {
     return workspacePath + "/liveCodings";
@@ -30,13 +45,16 @@ export default function useFirestoreRefPath() {
     return assignmentPath + "/submissions";
   };
   return {
+    getWorkspaceDocPath,
     getAssignmentPath,
     getLiveCodingRepositoryCollectionPath,
     getLiveCodingFileCollectionPath,
     getLiveCodingRepoItemPath,
+    getLiveCodingDocPath,
     getLiveCodingCollectionPath,
     getWorkspaceMemberCollectionPath,
     getUserPermissionPath,
     getAssignmentSubmissionPath,
+    getAssignmentDocPath,
   };
 }

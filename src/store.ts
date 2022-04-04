@@ -4,12 +4,12 @@ import fileRepositorySlice from "./reducers/FileRepositorySlice";
 import globalSlice from "./reducers/globalSlice";
 import liveCodingSlice from "./reducers/liveCodingSlice";
 import workspaceSlice from "./reducers/workspaceSlice";
-import storage from "redux-persist/lib/storage";
+import storage from "redux-persist/lib/storage/session";
 import { persistCombineReducers, persistStore } from "redux-persist";
 
 export const store = configureStore({
   reducer: persistCombineReducers(
-    { key: "root", storage },
+    { key: "root", storage, blacklist: ["global"] },
     {
       global: globalSlice,
       workspaces: workspaceSlice,

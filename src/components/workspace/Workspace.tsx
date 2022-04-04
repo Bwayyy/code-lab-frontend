@@ -2,12 +2,10 @@ import {
   Button,
   Col,
   Divider,
-  Input,
   List,
   message,
   PageHeader,
   Popconfirm,
-  Popover,
   Row,
   Space,
   Typography,
@@ -15,12 +13,8 @@ import {
 import { DocumentReference } from "firebase/firestore";
 import { Moment } from "moment";
 import { FC } from "react";
-import { AiOutlineUserAdd } from "react-icons/ai";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
-import useLiveCodingCollection from "../../firebase/collections/useLiveCodingCollection";
-import useAssignmentMutation from "../../hooks/assignments/useAssignmentMutation";
-import useAssignments from "../../hooks/assignments/useAssignments";
 import useLiveCodingMutation from "../../hooks/live-coding/useLiveCodingMutation";
 import usePopup from "../../hooks/usePopup";
 import useMomentFormat from "../../hooks/utils/useMomentFormat";
@@ -32,8 +26,13 @@ import { Assignment } from "../../types/assignment-types";
 import { LiveCodingRoom } from "../../types/live-coding-types";
 import { AssignemntInfoDrawer } from "./AssignmentInfoDrawer";
 import { LiveCodingInfoDrawer } from "./LiveCodingInfoDrawer";
-import { UserAddOutlined } from "@ant-design/icons";
 import InviteLinkPopover from "./InviteLinkPopover";
+import ManageMembersDrawer from "./ManageMembersDrawer";
+import { useLiveCodingsQuery } from "../../firebase/database/livecoding-collection";
+import {
+  deleteAssignment,
+  useAssignmentsQuery,
+} from "../../firebase/database/assignment-collection";
 
 export const Workspace: FC = () => {
   const navigate = useNavigate();
@@ -41,15 +40,15 @@ export const Workspace: FC = () => {
   const { formatMoment } = useMomentFormat();
   const liveCodingPopup = usePopup();
   const assignmentPopup = usePopup();
+  const manageMemberPopup = usePopup();
   const { id } = useParams();
   const workspace = useSelector(
     (state: RootState) => state.workspaces.currentWorkspace
   );
   const { isAdmin } = useWorkspaceRoleForUser(workspace?.id);
-  const { threads } = useLiveCodingCollection(id ?? "");
-  const { assignments } = useAssignments();
+  const { liveCodings } = useLiveCodingsQuery(id ?? "");
+  const { assignments } = useAssignmentsQuery(workspace?.id);
   const { remove } = useLiveCodingMutation();
-  const { remove: removeAssignment } = useAssignmentMutation();
   if (!workspace) {
     return <span>No Workspace Selected</span>;
   }
@@ -77,7 +76,7 @@ export const Workspace: FC = () => {
     assignmentPopup.showPopup("add");
   };
   const onRemoveAssignment = async (ref: DocumentReference) => {
-    await removeAssignment(ref);
+    await deleteAssignment(ref);
     message.success("The Assignment is removed");
   };
   return (
@@ -85,7 +84,16 @@ export const Workspace: FC = () => {
       <Space direction="vertical" style={{ width: "100%" }}>
         <PageHeader
           title={workspace.name}
-          extra={<InviteLinkPopover workspaceId={workspace.id} />}
+          extra={
+            isAdmin ? (
+              <>
+                <Button onClick={() => manageMemberPopup.showPopup("add")}>
+                  Manage Users
+                </Button>
+                <InviteLinkPopover workspaceId={workspace.id} />
+              </>
+            ) : null
+          }
         />
         <Row>
           <Col span={11}>
@@ -100,7 +108,7 @@ export const Workspace: FC = () => {
               }
             >
               <List
-                dataSource={threads}
+                dataSource={liveCodings}
                 renderItem={(item: LiveCodingRoom) => {
                   return (
                     <List.Item
@@ -234,6 +242,11 @@ export const Workspace: FC = () => {
         visible={assignmentPopup.visible}
         close={assignmentPopup.closePopup}
       />
+      <ManageMembersDrawer
+        visible={manageMemberPopup.visible}
+        close={manageMemberPopup.closePopup}
+        workspaceId={workspace.id}
+      ></ManageMembersDrawer>
     </>
   );
 };

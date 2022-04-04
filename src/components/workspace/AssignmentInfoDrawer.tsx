@@ -5,7 +5,11 @@ import { Timestamp } from "firebase/firestore";
 import moment from "moment";
 import { Moment } from "moment";
 import { FC, useMemo } from "react";
-import useAssignmentMutation from "../../hooks/assignments/useAssignmentMutation";
+import { useParams } from "react-router-dom";
+import {
+  createAssignemnt,
+  updateAssignment,
+} from "../../firebase/database/assignment-collection";
 import { PopupProps } from "../common/shared-types";
 
 export const AssignemntInfoDrawer: FC<PopupProps> = ({
@@ -14,7 +18,7 @@ export const AssignemntInfoDrawer: FC<PopupProps> = ({
   visible,
   close,
 }) => {
-  const { create, update } = useAssignmentMutation();
+  const { workspaceId, assignmentId } = useParams();
   const onFinish = async () => {
     const values = form?.getFieldsValue(true);
     const deadlineTimestamp = Timestamp.fromDate(
@@ -26,10 +30,10 @@ export const AssignemntInfoDrawer: FC<PopupProps> = ({
       maxScore: parseInt(values.maxScore),
     };
     if (action === "add") {
-      await create(normalized);
+      await createAssignemnt({ workspaceId, assignmentId }, normalized);
       message.success("A new assignment is created");
     } else if (action === "edit") {
-      await update(normalized);
+      await updateAssignment(normalized);
       message.success("The assignment is updated");
     }
     close();

@@ -18,7 +18,7 @@ export const FileTabs: FC = () => {
     }
   };
   return (
-    <div style={{ minHeight: 32, backgroundColor: "grey" }}>
+    <div style={{ minHeight: 32 }}>
       <Tabs
         tabBarStyle={{ marginBottom: 0 }}
         hideAdd
