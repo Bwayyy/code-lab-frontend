@@ -104,6 +104,7 @@ export const Workspace: FC = () => {
               }
             >
               <List
+                bordered
                 dataSource={liveCodings}
                 renderItem={(item: LiveCodingRoom) => {
                   return (
@@ -160,6 +161,7 @@ export const Workspace: FC = () => {
               }
             >
               <List
+                bordered
                 dataSource={assignments}
                 renderItem={(item: Assignment) => {
                   return (

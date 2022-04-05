@@ -7,6 +7,7 @@ import {
   DocumentReference,
   getDocs,
   query,
+  setDoc,
   where,
 } from "firebase/firestore";
 import {
@@ -14,7 +15,11 @@ import {
   useDocumentData,
 } from "react-firebase-hooks/firestore";
 import useFirestoreErrorMessaging from "../../hooks/useFirestoreErrorMessaging";
-import { WorkspaceRole, WorkspaceRoleBody } from "../../types/workspace-types";
+import {
+  Workspace,
+  WorkspaceBody,
+  WorkspaceRoleBody,
+} from "../../types/workspace-types";
 import {
   transformMembership,
   transformWorkspace,
@@ -109,5 +114,18 @@ export const useUserMemberForWorkspaceQuery = (
     loading,
     error,
   };
+};
+
+export const createWorkspace = (workspace: WorkspaceBody) => {
+  const col = collections.workspaces.get();
+  return addDoc(col, { ...workspace });
+};
+
+export const updateWorkspace = (
+  id: string,
+  workspace: Partial<WorkspaceBody>
+) => {
+  const docRef = collections.workspaces.getDoc(id);
+  return setDoc(docRef, workspace);
 };
 export const WorkspaceCollections = collections;

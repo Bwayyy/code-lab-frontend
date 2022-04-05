@@ -1,13 +1,16 @@
-import { Button, Collapse, List } from "antd";
+import { Button, Col, Collapse, List, Row, Space, Typography } from "antd";
 import { FC } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import usePopup from "../../hooks/usePopup";
 import useWorkspacesForUser from "../../hooks/workspace/useWorkspacesForUser";
 import {
   setCurrentMembership,
   setCurrentWorkspace,
 } from "../../reducers/workspaceSlice";
 import { WorkspaceAndMembership } from "../../types/workspace-types";
+import WorkspaceDrawer from "./WorkspaceDrawer";
+import { PlusOutlined } from "@ant-design/icons";
 export const WorkspaceList: FC = () => {
   const { workspaces, loading } = useWorkspacesForUser();
   const navigate = useNavigate();
@@ -17,16 +20,40 @@ export const WorkspaceList: FC = () => {
     dispatch(setCurrentWorkspace(item.workspace));
     dispatch(setCurrentMembership(item.membership));
   };
+  const createWorkspacePopup = usePopup();
   return (
-    <Collapse>
-      <Collapse.Panel key="1" header="Own Workspaces">
+    <Row style={{ width: "100%" }} gutter={24}>
+      <Col span={12}>
         <List
+          bordered
+          header={
+            <Space direction="horizontal">
+              <Typography.Title level={3}>Own Workspaces</Typography.Title>
+              <Button
+                icon={<PlusOutlined />}
+                type="primary"
+                onClick={(e) => {
+                  createWorkspacePopup.showPopup("add");
+                  e.stopPropagation();
+                }}
+              >
+                Create Workspace
+              </Button>
+            </Space>
+          }
           loading={loading}
           dataSource={workspaces?.filter((x) => x.membership?.role === "admin")}
           renderItem={(item) => {
             return (
               <List.Item
                 actions={[
+                  <Button
+                    onClick={() =>
+                      createWorkspacePopup.showPopup("edit", item.workspace)
+                    }
+                  >
+                    Edit
+                  </Button>,
                   <Button type="primary" onClick={() => onEnterClick(item)}>
                     Enter
                   </Button>,
@@ -40,9 +67,13 @@ export const WorkspaceList: FC = () => {
             );
           }}
         ></List>
-      </Collapse.Panel>
-      <Collapse.Panel key="2" header="Joined Workspaces">
+      </Col>
+      <Col span={12}>
         <List
+          bordered
+          header={
+            <Typography.Title level={3}>Joined Workspaces</Typography.Title>
+          }
           loading={loading}
           dataSource={workspaces?.filter(
             (x) => x.membership?.role === "normal"
@@ -64,7 +95,14 @@ export const WorkspaceList: FC = () => {
             );
           }}
         ></List>
-      </Collapse.Panel>
-    </Collapse>
+      </Col>
+
+      <WorkspaceDrawer
+        visible={createWorkspacePopup.visible}
+        close={createWorkspacePopup.closePopup}
+        action={createWorkspacePopup.action}
+        form={createWorkspacePopup.form}
+      />
+    </Row>
   );
 };
