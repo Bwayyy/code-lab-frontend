@@ -77,157 +77,153 @@ export const Workspace: FC = () => {
   };
   return (
     <>
-      <Space direction="vertical" style={{ width: "100%" }}>
-        <PageHeader
-          title={workspace.name}
-          extra={
-            isAdmin ? (
-              <>
-                <Button onClick={() => manageMemberPopup.showPopup("add")}>
-                  Manage Users
-                </Button>
-                <InviteLinkPopover workspaceId={workspace.id} />
-              </>
-            ) : null
-          }
-        />
-        <Row>
-          <Col span={11}>
-            <PageHeader
-              title="Live Codings"
-              extra={
-                isAdmin ? (
-                  <Button type="primary" onClick={() => onAddLiveCoding()}>
-                    Add Live Coding
-                  </Button>
-                ) : null
+      <PageHeader
+        title={workspace.name}
+        extra={
+          isAdmin ? (
+            <>
+              <Button onClick={() => manageMemberPopup.showPopup("add")}>
+                Manage Users
+              </Button>
+              <InviteLinkPopover workspaceId={workspace.id} />
+            </>
+          ) : null
+        }
+      >
+        <Row gutter={24}>
+          <Col span={12}>
+            <List
+              bordered
+              header={
+                <Row justify="space-between">
+                  <Typography.Title level={5}>Live Codings</Typography.Title>
+                  {isAdmin ? (
+                    <Button type="primary" onClick={() => onAddLiveCoding()}>
+                      Add Live Coding
+                    </Button>
+                  ) : null}
+                </Row>
               }
-            >
-              <List
-                bordered
-                dataSource={liveCodings}
-                renderItem={(item: LiveCodingRoom) => {
-                  return (
-                    <List.Item
-                      actions={[
-                        isAdmin ? (
-                          <Button
-                            onClick={() =>
-                              liveCodingPopup.showPopup("edit", item)
-                            }
-                            disabled={!isAdmin}
-                          >
-                            Edit
-                          </Button>
-                        ) : null,
+              dataSource={liveCodings}
+              renderItem={(item: LiveCodingRoom) => {
+                return (
+                  <List.Item
+                    actions={[
+                      isAdmin ? (
                         <Button
-                          type="primary"
-                          onClick={() => onEnterRoomClick(item)}
+                          onClick={() =>
+                            liveCodingPopup.showPopup("edit", item)
+                          }
+                          disabled={!isAdmin}
                         >
-                          Enter
-                        </Button>,
-                        isAdmin ? (
-                          <Popconfirm
-                            title="Are you sure?"
-                            onConfirm={() => onRemoveLiveCoding(item.ref)}
-                          >
-                            <Button danger type="primary" disabled={!isAdmin}>
-                              Close
-                            </Button>
-                          </Popconfirm>
-                        ) : null,
-                      ]}
-                    >
-                      <List.Item.Meta
-                        title={item.name}
-                        description={item.description}
-                      />
-                    </List.Item>
-                  );
-                }}
-              ></List>
-            </PageHeader>
-          </Col>
-          <Divider type="vertical" />
-          <Col span={11}>
-            <PageHeader
-              title="Assessments"
-              extra={
-                isAdmin ? (
-                  <Button type="primary" onClick={() => onAddAssignment()}>
-                    Add Assessment
-                  </Button>
-                ) : null
-              }
-            >
-              <List
-                bordered
-                dataSource={assignments}
-                renderItem={(item: Assignment) => {
-                  return (
-                    <List.Item
-                      actions={[
-                        isAdmin ? (
-                          <Button
-                            onClick={() =>
-                              assignmentPopup.showPopup("edit", item)
-                            }
-                          >
-                            Edit
-                          </Button>
-                        ) : null,
-                        <Button
-                          type="primary"
-                          onClick={() => onEnterAssignmentClick(item)}
-                        >
-                          {isAdmin ? "View & Grade" : "Detail"}
-                        </Button>,
-                        isAdmin ? (
-                          <Popconfirm
-                            title="Are you sure?"
-                            onConfirm={() => onRemoveAssignment(item.ref)}
-                          >
-                            <Button danger type="primary">
-                              Close
-                            </Button>
-                          </Popconfirm>
-                        ) : null,
-                      ]}
-                    >
-                      <Row
-                        style={{ width: "100%" }}
-                        align="middle"
-                        justify="space-between"
+                          Edit
+                        </Button>
+                      ) : null,
+                      <Button
+                        type="primary"
+                        onClick={() => onEnterRoomClick(item)}
                       >
-                        <Col md={12} xs={24}>
-                          <List.Item.Meta
-                            title={item.name}
-                            description={
-                              <div
-                                style={{
-                                  overflow: "hidden",
-                                  textOverflow: "ellipsis",
-                                }}
-                              >
-                                {item.objective}
-                              </div>
-                            }
-                          />
-                        </Col>
-                        <Col md={12} xs={24}>
-                          <Typography.Text strong>
-                            Deadline: {formatMoment(item.deadline as Moment)}
-                          </Typography.Text>
-                        </Col>
-                      </Row>
-                    </List.Item>
-                  );
-                }}
-              ></List>
-            </PageHeader>
+                        Enter
+                      </Button>,
+                      isAdmin ? (
+                        <Popconfirm
+                          title="Are you sure?"
+                          onConfirm={() => onRemoveLiveCoding(item.ref)}
+                        >
+                          <Button danger type="primary" disabled={!isAdmin}>
+                            Close
+                          </Button>
+                        </Popconfirm>
+                      ) : null,
+                    ]}
+                  >
+                    <List.Item.Meta
+                      title={item.name}
+                      description={item.description}
+                    />
+                  </List.Item>
+                );
+              }}
+            ></List>
+          </Col>
+          <Col span={12}>
+            <List
+              header={
+                <Row justify="space-between">
+                  <Typography.Title level={5}>Assessments</Typography.Title>
+                  {isAdmin ? (
+                    <Button type="primary" onClick={() => onAddAssignment()}>
+                      Add Assessment
+                    </Button>
+                  ) : null}
+                </Row>
+              }
+              bordered
+              dataSource={assignments}
+              renderItem={(item: Assignment) => {
+                return (
+                  <List.Item
+                    actions={[
+                      isAdmin ? (
+                        <Button
+                          onClick={() =>
+                            assignmentPopup.showPopup("edit", item)
+                          }
+                        >
+                          Edit
+                        </Button>
+                      ) : null,
+                      <Button
+                        type="primary"
+                        onClick={() => onEnterAssignmentClick(item)}
+                      >
+                        {isAdmin ? "View & Grade" : "Detail"}
+                      </Button>,
+                      isAdmin ? (
+                        <Popconfirm
+                          title="Are you sure?"
+                          onConfirm={() => onRemoveAssignment(item.ref)}
+                        >
+                          <Button danger type="primary">
+                            Close
+                          </Button>
+                        </Popconfirm>
+                      ) : null,
+                    ]}
+                  >
+                    <Row
+                      style={{ width: "100%" }}
+                      align="middle"
+                      justify="space-between"
+                    >
+                      <Col md={12} xs={24}>
+                        <List.Item.Meta
+                          title={item.name}
+                          description={
+                            <div
+                              style={{
+                                overflow: "hidden",
+                                textOverflow: "ellipsis",
+                              }}
+                            >
+                              {item.objective}
+                            </div>
+                          }
+                        />
+                      </Col>
+                      <Col md={12} xs={24}>
+                        <Typography.Text strong>
+                          Deadline: {formatMoment(item.deadline as Moment)}
+                        </Typography.Text>
+                      </Col>
+                    </Row>
+                  </List.Item>
+                );
+              }}
+            ></List>
           </Col>
         </Row>
-      </Space>
+      </PageHeader>
       <LiveCodingInfoDrawer
         form={liveCodingPopup.form}
         action={liveCodingPopup.action}

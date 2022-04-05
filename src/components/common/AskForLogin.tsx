@@ -1,4 +1,3 @@
-import { Spin } from "antd";
 import { FC, ReactElement } from "react";
 import useUserData from "../../hooks/useUserData";
 import LoadingPage from "./LoadingPage";

@@ -1,4 +1,4 @@
-import { Button, Dropdown, Menu, Row, Tree } from "antd";
+import { Button, Divider, Dropdown, Menu, Row, Tree } from "antd";
 import { FC, Key, useEffect, useState } from "react";
 import useFileTree from "../../hooks/file-directory/useFileTree";
 import {
@@ -11,7 +11,7 @@ import { KeyPressInput } from "../common/atoms/KeyPressInput";
 import useFileTabs from "../../hooks/file-directory/useFileTabs";
 const { DirectoryTree } = Tree;
 const FileDirectory: FC = () => {
-  const [rightClickKey, setRightClickKey] = useState<number>();
+  const [inputInitialValue, setInputInitialValue] = useState("");
   const [renamingKey, setRenamingKey] = useState<number>();
   const [popoverVisible, setPopoverVisible] = useState(false);
   const [newEntityType, setNewEntityType] = useState<"file" | "folder">();
@@ -19,15 +19,15 @@ const FileDirectory: FC = () => {
   const [selectedKey, setSelectedKey] = useState<number>(0);
   const [selectedNode, setSelectedNode] = useState<FileTreeNode>();
   const { activeFile, addFileToTab } = useFileTabs();
-  // useEffect(() => {
-  //   if (activeFile) {
-  //     setSelectedKey(activeFile.key);
-  //     setSelectedNode(getNode(activeFile.key));
-  //   } else {
-  //     setSelectedKey(0);
-  //     setSelectedNode(undefined);
-  //   }
-  // }, [activeFile]);
+  useEffect(() => {
+    if (activeFile) {
+      setSelectedKey(activeFile.key);
+      setSelectedNode(getNode(activeFile.key));
+    } else {
+      setSelectedKey(0);
+      setSelectedNode(undefined);
+    }
+  }, [activeFile]);
   const onSelect = (_selectedKeysValue: Key[], info: any) => {
     const { key, name, fileId, children } = info.node;
     const repoFile: RepositoryFile = { key, name, fileId, children };
@@ -50,7 +50,7 @@ const FileDirectory: FC = () => {
     setPopoverVisible(false);
   };
   return (
-    <>
+    <div className="wrapper">
       <Row justify="end" gutter={[12, 12]}>
         <InputPopover
           visible={popoverVisible}
@@ -83,14 +83,11 @@ const FileDirectory: FC = () => {
         titleRender={(node: any) => (
           <Dropdown
             overlay={
-              <Menu
-                onClick={() => {
-                  setRightClickKey(undefined);
-                }}
-              >
+              <Menu>
                 <Menu.Item
                   key="rename"
                   onClick={(e) => {
+                    setInputInitialValue(node.name);
                     setRenamingKey(node.key);
                     e.domEvent.stopPropagation();
                   }}
@@ -110,17 +107,11 @@ const FileDirectory: FC = () => {
               </Menu>
             }
             trigger={["contextMenu"]}
-            onVisibleChange={(visible) => {
-              if (visible) {
-                setRightClickKey(node.key);
-              } else {
-                setRightClickKey(undefined);
-              }
-            }}
           >
             {renamingKey && renamingKey === node.key ? (
               <KeyPressInput
-                style={{ width: "calc(100% - 20px)", height: 20 }}
+                initialValue={inputInitialValue}
+                style={{ width: "calc(100% - 24px)" }}
                 destory={() => setRenamingKey(undefined)}
                 onFinish={(name) => {
                   rename(renamingKey, name);
@@ -131,9 +122,7 @@ const FileDirectory: FC = () => {
               <div
                 style={{
                   display: "inline-block",
-                  width: "calc(100% - 20px)",
-                  border:
-                    rightClickKey === node.key ? "solid black 1px" : "none",
+                  width: "calc(100% - 24px)",
                 }}
               >
                 {node.title}
@@ -142,7 +131,7 @@ const FileDirectory: FC = () => {
           </Dropdown>
         )}
       ></DirectoryTree>
-    </>
+    </div>
   );
 };
 

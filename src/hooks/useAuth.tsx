@@ -7,11 +7,11 @@ import { setUserData } from "../reducers/globalSlice";
 
 export default function useAuth() {
   const dispatch = useDispatch();
-  const [user, loadingUser] = useAuthState(auth);
+  const [user] = useAuthState(auth);
 
   useEffect(() => {
     const initUser = async () => {
-      if (!loadingUser && user) {
+      if (user) {
         const userRecord = await fetchUser(user.uid);
         dispatch(
           setUserData({
@@ -23,5 +23,5 @@ export default function useAuth() {
       }
     };
     initUser();
-  }, [user, loadingUser]);
+  }, [user]);
 }

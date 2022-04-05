@@ -22,7 +22,7 @@ export const LiveCodingInfoDrawer: FC<PopupProps> = ({
     close();
   };
   const actionText = useMemo(
-    () => (action === "add" ? "Creat" : "Save"),
+    () => (action === "add" ? "Create" : "Save"),
     [action]
   );
   return (

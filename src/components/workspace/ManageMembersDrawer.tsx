@@ -1,4 +1,4 @@
-import { Avatar, Button, Drawer, List, message } from "antd";
+import { Avatar, Button, Divider, Drawer, List, message } from "antd";
 import { Input } from "antd";
 import { deleteDoc, updateDoc } from "firebase/firestore";
 import { FC, useState } from "react";
@@ -49,6 +49,7 @@ const ManageMembersDrawer: FC<PopupProps & { workspaceId: string }> = ({
           setFilter(e.target.value.toLowerCase());
         }}
       ></Search>
+      <Divider type="horizontal" />
       <List
         loading={loading}
         dataSource={members}

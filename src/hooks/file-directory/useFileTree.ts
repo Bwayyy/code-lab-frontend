@@ -116,6 +116,9 @@ export default function useFileTree() {
         if (!node) context.skip();
         else {
           if (node.key === parent?.key) {
+            if (node.children === undefined) {
+              node.children = [];
+            }
             node.children?.push(newNode);
             if (context.parent && context.parent.children) {
               context.parent.children[context.index] = node as any;

@@ -4,7 +4,7 @@ import { RootState } from "../store";
 import { useAuthState } from "react-firebase-hooks/auth";
 export default function useUserData() {
   const userData = useSelector((state: RootState) => state.global.userData);
-  const [user, loading, error] = useAuthState(auth);
+  const [user, loading] = useAuthState(auth);
   return {
     userData,
     loading,

@@ -1,11 +1,11 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import {
   LiveCodingRoom,
-  UserRoomPerimission,
+  UserRoomPermissionBody,
 } from "../types/live-coding-types";
 type InitialState = {
   currentRoom?: LiveCodingRoom;
-  roomPermission?: UserRoomPerimission;
+  roomPermission?: UserRoomPermissionBody;
 };
 const initialState: InitialState = {};
 
@@ -19,7 +19,10 @@ export const liveCodingSlice = createSlice({
     ) => {
       state.currentRoom = action.payload;
     },
-    setRoomPermission: (state, action: PayloadAction<UserRoomPerimission>) => {
+    setRoomPermission: (
+      state,
+      action: PayloadAction<UserRoomPermissionBody>
+    ) => {
       state.roomPermission = action.payload;
     },
   },

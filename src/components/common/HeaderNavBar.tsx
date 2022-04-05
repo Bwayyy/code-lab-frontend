@@ -7,7 +7,6 @@ import { useDispatch } from "react-redux";
 import { showLogin, showSignUp } from "../../reducers/globalSlice";
 import useUserData from "../../hooks/useUserData";
 import { AiOutlineUser } from "react-icons/ai";
-import useAuth from "../../hooks/useAuth";
 import { appPaths } from "../../utils/path";
 import useAuthActions from "../../hooks/useAuthActions";
 export const HeaderNavBar: FC = () => {
@@ -16,7 +15,7 @@ export const HeaderNavBar: FC = () => {
   const { signout } = useAuthActions();
   return (
     <>
-      <Header style={{ backgroundColor: "#FFFFFF" }}>
+      <Header>
         <span
           style={{
             fontSize: 16,

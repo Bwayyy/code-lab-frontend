@@ -1,17 +1,22 @@
-import { Col, Row, Spin } from "antd";
+import { Badge, Row, Space, Spin } from "antd";
 import { FC } from "react";
-import { useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
 import { PresenceProvider } from "y-presence";
+import { useLiveCodingPermissionQuery } from "../../firebase/database/livecoding-collection";
 import useRoomName from "../../hooks/collaborative-editing/useRoomName";
 import useYjs from "../../hooks/collaborative-editing/useYjs";
-import { RootState } from "../../store";
+import useUserData from "../../hooks/useUserData";
 import CodeEditor from "./CodeEditor";
-import LiveUserList from "./LiveUserList";
+import LiveUserListButton from "./LiveUserListButton";
 export const LiveCodingSection: FC = () => {
   const { roomName } = useRoomName();
-  const { doc, provider, isReady } = useYjs({ room: roomName });
-  const permission = useSelector(
-    (state: RootState) => state.liveCoding.roomPermission
+  const { provider, isReady } = useYjs({ room: roomName });
+  const { userData } = useUserData();
+  const { workspaceId, liveCodingId } = useParams();
+  const { permission } = useLiveCodingPermissionQuery(
+    workspaceId,
+    liveCodingId,
+    userData?.id
   );
   return (
     <Spin
@@ -20,13 +25,16 @@ export const LiveCodingSection: FC = () => {
     >
       {isReady ? (
         <PresenceProvider awareness={provider?.awareness}>
-          <Row>
-            <Col span={4}>
-              <LiveUserList doc={doc} provider={provider} />
-            </Col>
-            <Col span={20}>
-              <CodeEditor writePermission={permission?.write || false} />
-            </Col>
+          <Row gutter={12} justify="end">
+            <Space direction="horizontal">
+              {permission?.write ? (
+                <Badge color={"green"} text={"Write mode"} />
+              ) : (
+                <Badge color={"red"} text={"Read mode"} />
+              )}
+              <LiveUserListButton provider={provider} permission={permission} />
+            </Space>
+            <CodeEditor />
           </Row>
         </PresenceProvider>
       ) : null}

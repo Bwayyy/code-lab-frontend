@@ -11,7 +11,7 @@ export const PageLayout: FC = ({ children }) => {
       </Layout>
       <Content style={{ margin: "12px 24px" }}>
         <AppBreadcrumb />
-        {children}
+        <Content>{children}</Content>
       </Content>
     </>
   );

@@ -1,6 +1,9 @@
 import { DocumentData, QueryDocumentSnapshot } from "firebase/firestore";
 import { Repository } from "../../types/file-repository-types";
-import { LiveCodingRoom } from "../../types/live-coding-types";
+import {
+  LiveCodingRoom,
+  UserRoomPermission,
+} from "../../types/live-coding-types";
 
 export const transformLiveCoding = (data: DocumentData) => {
   return {
@@ -14,4 +17,12 @@ export const transformLiveCoding = (data: DocumentData) => {
 
 export const transformRepository = (data?: DocumentData) => {
   return JSON.parse(data?.json ?? "[]") as Repository;
+};
+
+export const transformPermission = (data: DocumentData) => {
+  return {
+    id: data.id,
+    ref: data.ref,
+    write: data.write,
+  } as UserRoomPermission;
 };
