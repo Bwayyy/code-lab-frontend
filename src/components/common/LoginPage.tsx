@@ -1,15 +1,23 @@
 import { Button, Card, Form, Input, Row } from "antd";
 import { useForm } from "antd/lib/form/Form";
 import { FC } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import useAuthActions from "../../hooks/useAuthActions";
 import { appPaths } from "../../utils/path";
 export const LoginPage: FC = () => {
   const [form] = useForm();
   const { signIn, loading } = useAuthActions();
   const navigate = useNavigate();
+  const { state } = useLocation();
   const onFinish = (values: any) => {
-    signIn(values, () => navigate(appPaths.workspaces));
+    const from = (state as any)?.from;
+    signIn(values, () => {
+      if (from) {
+        navigate(from);
+      } else {
+        navigate(appPaths.workspaces);
+      }
+    });
   };
   return (
     <Row justify="center">

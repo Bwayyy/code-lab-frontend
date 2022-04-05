@@ -50,7 +50,7 @@ const FileDirectory: FC = () => {
     setPopoverVisible(false);
   };
   return (
-    <div className="wrapper">
+    <div className="wrapper" style={{ minHeight: 340 }}>
       <Row justify="end" gutter={[12, 12]}>
         <InputPopover
           visible={popoverVisible}

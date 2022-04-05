@@ -1,6 +1,16 @@
-import { Badge, Button, Col, Drawer, List, Row, Switch } from "antd";
+import {
+  Badge,
+  Button,
+  Col,
+  Drawer,
+  List,
+  Row,
+  Switch,
+  Input,
+  Divider,
+} from "antd";
 import Avatar from "antd/lib/avatar/avatar";
-import { FC, useMemo } from "react";
+import { FC, useMemo, useState } from "react";
 import { AiOutlineUser } from "react-icons/ai";
 import { FiUsers } from "react-icons/fi";
 import { useParams } from "react-router-dom";
@@ -14,12 +24,14 @@ import {
   LiveCodingUser,
   UserRoomPermissionBody,
 } from "../../types/live-coding-types";
+const { Search } = Input;
 export type YjsProps = {
   provider?: WebsocketProvider;
   permission?: UserRoomPermissionBody;
 };
 const LiveUserListButton: FC<YjsProps> = ({ provider, permission }) => {
   const { workspaceId, liveCodingId } = useParams();
+  const [filter, setFilter] = useState("");
   const { self, others } = useLiveCodingUsers(provider?.awareness, permission);
   const liveUsersPopup = usePopup();
   const { isAdmin } = useWorkspaceRoleForUser(workspaceId);
@@ -43,7 +55,9 @@ const LiveUserListButton: FC<YjsProps> = ({ provider, permission }) => {
       },
     };
   }, [self]);
-  const allUser = [customNameSelf, ...uniqueOthers];
+  const allUser = [customNameSelf, ...uniqueOthers].filter((x) =>
+    x.presence?.userName?.toLowerCase().includes(filter.toLowerCase())
+  );
   return (
     <>
       <Badge count={allUser.length}>
@@ -61,9 +75,9 @@ const LiveUserListButton: FC<YjsProps> = ({ provider, permission }) => {
         visible={liveUsersPopup.visible}
         onClose={liveUsersPopup.closePopup}
       >
+        <Search onChange={(e) => setFilter(e.target.value)} />
+        <Divider type="horizontal" />
         <List
-          bordered
-          header="Current Users"
           dataSource={allUser}
           renderItem={(item: User<LiveCodingUser>) => {
             return (

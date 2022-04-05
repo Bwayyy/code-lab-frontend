@@ -1,6 +1,6 @@
-import { Badge, Button, message, Row, Space, Spin } from "antd";
+import { Badge, Button, Row, Space, Spin } from "antd";
 import { updateDoc } from "firebase/firestore";
-import { FC, useEffect } from "react";
+import { FC } from "react";
 import { useParams } from "react-router-dom";
 import { PresenceProvider } from "y-presence";
 import {
