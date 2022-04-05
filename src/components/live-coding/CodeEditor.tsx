@@ -15,8 +15,9 @@ import useFileTabs from "../../hooks/file-directory/useFileTabs";
 import useCodeLanguage from "../../hooks/code-editor/useCodeLanguage";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store";
+import { LiveCodingRoom } from "../../types/live-coding-types";
 
-const CodeEditor: FC = () => {
+const CodeEditor: FC<{ liveCoding?: LiveCodingRoom }> = ({ liveCoding }) => {
   const permission = useSelector(
     (state: RootState) => state.liveCoding.roomPermission
   );
@@ -34,7 +35,8 @@ const CodeEditor: FC = () => {
       );
     }
   }, [doc, provider, editor]);
-  const readonly = !permission?.write || activeFile === undefined;
+  const canWrite =
+    liveCoding?.isLive && permission?.write && activeFile !== undefined;
   return (
     <Row style={{ width: "100%" }} gutter={[12, 0]}>
       <Col span={6}>
@@ -44,7 +46,7 @@ const CodeEditor: FC = () => {
         <FileTabs />
         <CodeMirror
           options={{
-            readOnly: readonly ? "nocursor" : false,
+            readOnly: !canWrite ? "nocursor" : false,
             mode: language,
             theme: "material",
             lineNumbers: true,

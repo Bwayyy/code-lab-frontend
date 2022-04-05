@@ -5,7 +5,6 @@ import {
 } from "react-firebase-hooks/firestore";
 import useFirestoreErrorMessaging from "../../hooks/useFirestoreErrorMessaging";
 import {
-  LiveCodingRoom,
   LiveCodingRoomBody,
   UserRoomPermissionBody,
 } from "../../types/live-coding-types";
@@ -63,6 +62,21 @@ export const useLiveCodingsQuery = (workspaceId?: string) => {
   useFirestoreErrorMessaging(error);
   return {
     liveCodings: data?.map((x) => transformLiveCoding(x)),
+    loading,
+    error,
+  };
+};
+export const useLiveCodingByKeyQuery = (
+  workspaceId?: string,
+  liveCodingId?: string
+) => {
+  const doc =
+    workspaceId && liveCodingId
+      ? collections.liveCodings.getDoc(workspaceId, liveCodingId)
+      : null;
+  const [data, loading, error] = useDocumentData(doc, firestoreFetchOptions);
+  return {
+    liveCoding: data ? transformLiveCoding(data) : data,
     loading,
     error,
   };

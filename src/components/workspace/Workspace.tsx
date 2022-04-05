@@ -1,4 +1,5 @@
 import {
+  Badge,
   Button,
   Col,
   List,
@@ -6,6 +7,7 @@ import {
   PageHeader,
   Popconfirm,
   Row,
+  Space,
   Typography,
 } from "antd";
 import { DocumentReference } from "firebase/firestore";
@@ -33,7 +35,6 @@ import {
   deleteAssignment,
   useAssignmentsQuery,
 } from "../../firebase/database/assignment-collection";
-
 export const Workspace: FC = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -138,7 +139,16 @@ export const Workspace: FC = () => {
                     ]}
                   >
                     <List.Item.Meta
-                      title={item.name}
+                      title={
+                        <Space>
+                          <span>{item.name}</span>
+                          {item.isLive ? (
+                            <Badge color="red" text="Live Now"></Badge>
+                          ) : (
+                            <Badge color="grey" text="Offline"></Badge>
+                          )}
+                        </Space>
+                      }
                       description={item.description}
                     />
                   </List.Item>
