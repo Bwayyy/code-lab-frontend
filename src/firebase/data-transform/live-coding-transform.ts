@@ -1,4 +1,4 @@
-import { DocumentData, QueryDocumentSnapshot } from "firebase/firestore";
+import { DocumentData } from "firebase/firestore";
 import { Repository } from "../../types/file-repository-types";
 import {
   LiveCodingRoom,

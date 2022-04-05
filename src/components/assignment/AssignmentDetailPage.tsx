@@ -2,7 +2,6 @@ import { Button, Descriptions, PageHeader, Space, Upload } from "antd";
 import { Moment } from "moment";
 import { FC } from "react";
 import { AiOutlineUpload } from "react-icons/ai";
-import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import {
   useAssignmentDocByIdQuery,

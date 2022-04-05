@@ -9,7 +9,6 @@ import { WebsocketProvider } from "y-websocket";
 import { updatePermission } from "../../firebase/database/livecoding-collection";
 import useLiveCodingUsers from "../../hooks/collaborative-editing/useLiveCodingUsers";
 import usePopup from "../../hooks/usePopup";
-import useUserData from "../../hooks/useUserData";
 import useWorkspaceRoleForUser from "../../hooks/workspace/useWorkspaceRoleForUser";
 import {
   LiveCodingUser,
@@ -25,7 +24,6 @@ const LiveUserListButton: FC<YjsProps> = ({ provider, permission }) => {
   const liveUsersPopup = usePopup();
   const { isAdmin } = useWorkspaceRoleForUser(workspaceId);
   const onWritePermissionChange = (checked: boolean, user?: LiveCodingUser) => {
-    console.log(user);
     if (user) {
       updatePermission({ workspaceId, liveCodingId }, user.userId, {
         write: checked,

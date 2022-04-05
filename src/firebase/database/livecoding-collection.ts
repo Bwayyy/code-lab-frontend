@@ -1,5 +1,4 @@
-import { collection, doc, Firestore, setDoc } from "firebase/firestore";
-import { min } from "lodash";
+import { collection, doc, setDoc } from "firebase/firestore";
 import {
   useCollectionData,
   useDocumentData,
@@ -69,7 +68,6 @@ export const useLiveCodingPermissionQuery = (
       : null;
   const [data, loading, error] = useDocumentData(docRef, firestoreFetchOptions);
   useFirestoreErrorMessaging(error);
-  console.log({ data });
   return {
     permission: data ? transformPermission(data) : undefined,
     loading,

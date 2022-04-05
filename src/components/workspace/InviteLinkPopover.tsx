@@ -1,5 +1,5 @@
 import { Button, Input, Popover, Typography } from "antd";
-import { FC, useState } from "react";
+import { FC } from "react";
 import { UserAddOutlined } from "@ant-design/icons";
 import useInvitation from "../../hooks/workspace/useInvitation";
 type InviteLinkPopoverProps = {

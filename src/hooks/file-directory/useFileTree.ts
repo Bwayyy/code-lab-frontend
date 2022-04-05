@@ -8,7 +8,6 @@ import _ from "lodash";
 import { message } from "antd";
 import useFileTabs from "./useFileTabs";
 import useRepository from "./useRepository";
-import { Console } from "console";
 export default function useFileTree() {
   const { repository, addFile, deleteFile, saveRepository } = useRepository();
   const { remove: removeTab } = useFileTabs();

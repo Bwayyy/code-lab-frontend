@@ -7,7 +7,7 @@ import useWorkspaceDetail from "../../hooks/workspace/useWorkspaceDetail";
 const InvitationPage: FC = () => {
   const { workspaceId } = useParams();
   const { join } = useInvitation(workspaceId ?? "");
-  const { workspace, loading, error } = useWorkspaceDetail(workspaceId);
+  const { workspace, loading } = useWorkspaceDetail(workspaceId);
   if (loading) {
     return (
       <Modal visible={true}>

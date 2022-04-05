@@ -1,10 +1,8 @@
 import {
   addDoc,
   collection,
-  deleteDoc,
   doc,
   documentId,
-  DocumentReference,
   getDocs,
   query,
   setDoc,
@@ -15,11 +13,7 @@ import {
   useDocumentData,
 } from "react-firebase-hooks/firestore";
 import useFirestoreErrorMessaging from "../../hooks/useFirestoreErrorMessaging";
-import {
-  Workspace,
-  WorkspaceBody,
-  WorkspaceRoleBody,
-} from "../../types/workspace-types";
+import { WorkspaceBody, WorkspaceRoleBody } from "../../types/workspace-types";
 import {
   transformMembership,
   transformWorkspace,

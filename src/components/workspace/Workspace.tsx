@@ -1,13 +1,11 @@
 import {
   Button,
   Col,
-  Divider,
   List,
   message,
   PageHeader,
   Popconfirm,
   Row,
-  Space,
   Typography,
 } from "antd";
 import { DocumentReference } from "firebase/firestore";

@@ -3,7 +3,6 @@ import {
   doc,
   documentId,
   getDoc,
-  getDocs,
   query,
   where,
 } from "firebase/firestore";
