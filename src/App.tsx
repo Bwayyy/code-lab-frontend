@@ -1,5 +1,5 @@
 import "./App.css";
-import { Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import { LoginPage } from "./components/common/LoginPage";
 import { LoggedInPageLayout } from "./components/common/LoggedInPageLayout";
 import { WorkspaceList } from "./components/workspace/WorkspaceList";
@@ -14,15 +14,23 @@ import { AskForLogin } from "./components/common/AskForLogin";
 import { Spin } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
 import useSyncStateWithURL from "./hooks/useSyncStateWithURL";
+import useUserData from "./hooks/useUserData";
 function App() {
   // const { synced } = useSyncStateWithURL();
   // if (!synced)
   //   return (
   //     <Spin indicator={<LoadingOutlined style={{ fontSize: 24 }} spin />} />
   //   );
+  const { isLoggedin } = useUserData();
   return (
     <div className="App">
       <Routes>
+        <Route
+          path="/"
+          element={
+            <Navigate to={isLoggedin ? appPaths.login : appPaths.workspaces} />
+          }
+        ></Route>
         <Route path={appPaths.login} element={<LoginPage />}></Route>
         <Route path={appPaths.register} element={<RegisterPage />} />
         <Route

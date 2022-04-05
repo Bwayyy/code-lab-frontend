@@ -21,7 +21,7 @@ export const AssignmentDetailPage: FC = () => {
   const { workspace } = useWorkspaceDocQuery(workspaceId);
   const { submission } = useSubmissionDocByIdQuery(
     { workspaceId, assignmentId },
-    userData.id
+    userData?.id
   );
   const { formatMoment } = useMomentFormat();
   const { assignment } = useAssignmentDocByIdQuery({

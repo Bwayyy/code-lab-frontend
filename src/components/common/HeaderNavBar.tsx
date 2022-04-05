@@ -34,7 +34,7 @@ export const HeaderNavBar: FC = () => {
             <SubMenu
               icon={<AiOutlineUser />}
               style={{ marginLeft: "auto" }}
-              title={`${userData?.username}`}
+              title={`${userData?.displayName}`}
             >
               <Menu>
                 <Menu.Item

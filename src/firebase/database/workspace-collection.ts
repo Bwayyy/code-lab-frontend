@@ -55,8 +55,10 @@ export const useWorkspacesByKeysQuery = (keys?: string[]) => {
   };
 };
 
-export const useMembershipsByUserIdQuery = (userId: string) => {
-  const q = query(collections.members.get(), where("userId", "==", userId));
+export const useMembershipsByUserIdQuery = (userId?: string) => {
+  const q = userId
+    ? query(collections.members.get(), where("userId", "==", userId))
+    : null;
   const [data, loading, error] = useCollectionData(q, firestoreFetchOptions);
   return {
     members: data?.map((x) => transformMembership(x)),

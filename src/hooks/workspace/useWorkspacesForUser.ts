@@ -7,7 +7,7 @@ import { WorkspaceAndMembership } from "../../types/workspace-types";
 export default function useWorkspacesForUser() {
   const { userData } = useUserData();
   const { members: memberships, loading: mLoading } =
-    useMembershipsByUserIdQuery(userData.id);
+    useMembershipsByUserIdQuery(userData?.id);
   const { workspaces, loading } = useWorkspacesByKeysQuery(
     memberships?.map((x) => x.workspaceId)
   );

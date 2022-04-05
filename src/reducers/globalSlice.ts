@@ -26,7 +26,7 @@ export const globalSlice = createSlice({
     closeLogin: (state) => {
       state.loginVisible = false;
     },
-    setUserData: (state, action: PayloadAction<UserData>) => {
+    setUserData: (state, action: PayloadAction<UserData | undefined>) => {
       state.userData = action.payload;
     },
     clearUserData: (state) => {

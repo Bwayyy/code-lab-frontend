@@ -33,7 +33,7 @@ export default function useLiveCodingUsers(awareness?: Awareness) {
     return data;
   }, [permission]);
   const { self, updatePresence } = useSelf<LiveCodingUser>({
-    userName: userData?.username ?? "",
+    userName: userData?.displayName ?? "",
     userId: userData?.id ?? "",
     permission: userRoomPermission,
   });

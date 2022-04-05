@@ -65,7 +65,7 @@ export default function useAssignmentUpload() {
       const submissionPath = getAssignmentSubmissionPath(assignment?.ref.path);
       const submissionDoc = doc(fireStore, submissionPath, userData.id);
       await setDoc(submissionDoc, {
-        userName: userData.username,
+        userName: userData.displayName,
         submitted_at: Timestamp.now(),
         folderPath,
       });

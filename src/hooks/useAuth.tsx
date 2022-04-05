@@ -2,8 +2,13 @@ import { message } from "antd";
 import { FirebaseError } from "firebase/app";
 import { signInWithEmailAndPassword, signOut } from "firebase/auth";
 import { useEffect, useState } from "react";
+import {
+  useAuthState,
+  useSignInWithEmailAndPassword,
+} from "react-firebase-hooks/auth";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { fetchUser } from "../firebase/database/users-collection";
 import { getErrorMessages } from "../firebase/error-handling/getErrorMessages";
 import { auth } from "../firebase/firebaseApp";
 import { clearUserData, setUserData } from "../reducers/globalSlice";
@@ -12,37 +17,31 @@ import { appPaths } from "../utils/path";
 export default function useAuth() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [loading, setloading] = useState(false);
+  const [user, loadingUser] = useAuthState(auth);
+  const [signInWithEmailAndPassword, _user, isLoggingIn] =
+    useSignInWithEmailAndPassword(auth);
   useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged((user) => {
-      if (user) {
+    const initUser = async () => {
+      if (!loadingUser && user) {
+        const userRecord = await fetchUser(user.uid);
         dispatch(
           setUserData({
             id: user.uid,
-            username: user.displayName ?? "",
+            displayName: userRecord?.displayName,
             email: user.email ?? "",
           })
         );
       }
-    });
-    return unsubscribe;
-  }, [dispatch]);
+    };
+    initUser();
+  }, [user, loadingUser]);
   const signIn = async ({ email, password }: any, callback?: () => void) => {
-    setloading(true);
-    return signInWithEmailAndPassword(auth, email, password)
-      .then(() => {
-        setloading(false);
-        callback?.();
-      })
-      .catch((err: FirebaseError) => {
-        setloading(false);
-        message.error(getErrorMessages(err));
-      });
+    await signInWithEmailAndPassword(email, password);
   };
   const signout = async () => {
     await signOut(auth);
     dispatch(clearUserData());
     navigate(appPaths.login);
   };
-  return { signIn, signout, loading };
+  return { signIn, signout, loading: isLoggingIn };
 }

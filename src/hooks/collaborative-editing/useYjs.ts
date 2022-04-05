@@ -21,7 +21,7 @@ export default function useYjs({ room }: { room: string }) {
   const initProvider = (doc: Y.Doc) => {
     provider?.destroy();
     const wsProvider = new WebsocketProvider("ws://localhost:1234", room, doc);
-    wsProvider.awareness.setLocalState({ username: userData?.username });
+    wsProvider.awareness.setLocalState({ username: userData?.displayName });
     setProvider(wsProvider);
   };
   useEffect(() => {
