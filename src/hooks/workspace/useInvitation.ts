@@ -1,6 +1,9 @@
-import { addDoc, collection, setDoc } from "firebase/firestore";
+import { message } from "antd";
 import { useNavigate } from "react-router-dom";
-import { fireStore } from "../../firebase/firebaseApp";
+import {
+  addMember,
+  getMemberById,
+} from "../../firebase/database/workspace-collection";
 import { appPaths } from "../../utils/path";
 import useUserData from "../useUserData";
 
@@ -9,12 +12,23 @@ export default function useInvitation(workspaceId: string) {
   const { userData } = useUserData();
   const navigate = useNavigate();
   const join = async () => {
-    await addDoc(collection(fireStore, "workspace_members"), {
-      role: "normal",
-      userId: userData?.id,
-      workspaceId: workspaceId,
-    });
-    navigate(appPaths.workspaces);
+    if (userData) {
+      const existing = await getMemberById(userData.id);
+      if (!existing.empty) {
+        message.warning(
+          "You are already member in the workspace, returning to Workspace list"
+        );
+      } else {
+        await addMember({
+          role: "normal",
+          userId: userData?.id,
+          workspaceId: workspaceId,
+        });
+      }
+      navigate(appPaths.workspaces);
+    } else {
+      message.error("You are not authenticated yet!");
+    }
   };
   return { invitationLink, join };
 }

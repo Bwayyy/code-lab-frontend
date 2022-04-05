@@ -18,5 +18,6 @@ export type UserRegisterInfo = {
 };
 
 export type FirestoreEntity = {
+  id: string;
   ref: DocumentReference;
 };

@@ -9,10 +9,11 @@ import useUserData from "../../hooks/useUserData";
 import { AiOutlineUser } from "react-icons/ai";
 import useAuth from "../../hooks/useAuth";
 import { appPaths } from "../../utils/path";
+import useAuthActions from "../../hooks/useAuthActions";
 export const HeaderNavBar: FC = () => {
   const dispatch = useDispatch();
   const { isLoggedin, userData } = useUserData();
-  const { signout } = useAuth();
+  const { signout } = useAuthActions();
   return (
     <>
       <Header style={{ backgroundColor: "#FFFFFF" }}>

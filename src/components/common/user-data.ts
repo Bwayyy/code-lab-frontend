@@ -1,5 +1,7 @@
 export type UserData = {
-  id: string;
   email: string;
+} & UserInfo;
+export type UserInfo = {
+  id: string;
   displayName: string;
 };

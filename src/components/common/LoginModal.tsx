@@ -3,11 +3,12 @@ import { useForm } from "antd/lib/form/Form";
 import { FC } from "react";
 import { useDispatch } from "react-redux";
 import useAuth from "../../hooks/useAuth";
+import useAuthActions from "../../hooks/useAuthActions";
 import { closeLogin } from "../../reducers/globalSlice";
 export const LoginModal: FC = () => {
   const dispatch = useDispatch();
   const [form] = useForm();
-  const { signIn, loading } = useAuth();
+  const { signIn, loading } = useAuthActions();
   const onFinish = (values: any) => {
     signIn(values);
   };

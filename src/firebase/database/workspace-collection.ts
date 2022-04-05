@@ -1,8 +1,19 @@
-import { collection, doc, documentId, query, where } from "firebase/firestore";
+import {
+  addDoc,
+  collection,
+  deleteDoc,
+  doc,
+  documentId,
+  DocumentReference,
+  getDocs,
+  query,
+  where,
+} from "firebase/firestore";
 import {
   useCollectionData,
   useDocumentData,
 } from "react-firebase-hooks/firestore";
+import { WorkspaceRole, WorkspaceRoleBody } from "../../types/workspace-types";
 import {
   transformMembership,
   transformWorkspace,
@@ -44,9 +55,10 @@ export const useMembersQuery = (workspaceId: string) => {
   };
 };
 export const useWorkspacesByKeysQuery = (keys?: string[]) => {
-  const q = keys
-    ? query(collections.workspaces.get(), where(documentId(), "in", keys))
-    : null;
+  const q =
+    keys && keys.length > 0
+      ? query(collections.workspaces.get(), where(documentId(), "in", keys))
+      : null;
   const [data, loading, error] = useCollectionData(q, firestoreFetchOptions);
   return {
     workspaces: data?.map((x) => transformWorkspace(x)),
@@ -65,5 +77,12 @@ export const useMembershipsByUserIdQuery = (userId?: string) => {
     loading,
     error,
   };
+};
+export const getMemberById = (userId: string) => {
+  const q = query(collections.members.get(), where("userId", "==", userId));
+  return getDocs(q);
+};
+export const addMember = (member: WorkspaceRoleBody) => {
+  return addDoc(collections.members.get(), member);
 };
 export const WorkspaceCollections = collections;

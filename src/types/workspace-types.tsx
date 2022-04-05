@@ -8,13 +8,12 @@ export type Workspace = {
 } & EntityBase &
   FirestoreEntity;
 
-export type WorkspaceRole = {
-  id: string;
+export type WorkspaceRole = WorkspaceRoleBody & FirestoreEntity;
+export type WorkspaceRoleBody = {
   role: "admin" | "normal";
   userId: string;
   workspaceId: string;
-} & FirestoreEntity;
-
+};
 export type WorkspaceAndMembership = {
   workspace: Workspace;
   membership: WorkspaceRole;

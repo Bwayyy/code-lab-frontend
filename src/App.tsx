@@ -11,16 +11,10 @@ import { AssignmentDetailPage } from "./components/assignment/AssignmentDetailPa
 import { AssignmentGradingPage } from "./components/assignment/AssignmentGradingPage";
 import InvitationPage from "./components/workspace/InvitationPage";
 import { AskForLogin } from "./components/common/AskForLogin";
-import { Spin } from "antd";
-import { LoadingOutlined } from "@ant-design/icons";
-import useSyncStateWithURL from "./hooks/useSyncStateWithURL";
 import useUserData from "./hooks/useUserData";
+import useAuth from "./hooks/useAuth";
 function App() {
-  // const { synced } = useSyncStateWithURL();
-  // if (!synced)
-  //   return (
-  //     <Spin indicator={<LoadingOutlined style={{ fontSize: 24 }} spin />} />
-  //   );
+  useAuth();
   const { isLoggedin } = useUserData();
   return (
     <div className="App">

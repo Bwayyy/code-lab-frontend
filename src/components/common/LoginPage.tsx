@@ -3,10 +3,11 @@ import { useForm } from "antd/lib/form/Form";
 import { FC } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
+import useAuthActions from "../../hooks/useAuthActions";
 import { appPaths } from "../../utils/path";
 export const LoginPage: FC = () => {
   const [form] = useForm();
-  const { signIn, loading } = useAuth();
+  const { signIn, loading } = useAuthActions();
   const navigate = useNavigate();
   const onFinish = (values: any) => {
     signIn(values, () => navigate(appPaths.workspaces));
