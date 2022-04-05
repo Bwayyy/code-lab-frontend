@@ -12,16 +12,18 @@ import { AskForLogin } from "./components/common/AskForLogin";
 import useUserData from "./hooks/useUserData";
 import useAuth from "./hooks/useAuth";
 import { AssignmentPage } from "./components/assignment/AssignmentPage";
+import LoadingPage from "./components/common/LoadingPage";
 function App() {
   useAuth();
-  const { isLoggedin } = useUserData();
+  const { loading, isLoggedin } = useUserData();
+  if (loading) return <LoadingPage />;
   return (
     <div className="App">
       <Routes>
         <Route
           path="/"
           element={
-            <Navigate to={isLoggedin ? appPaths.login : appPaths.workspaces} />
+            <Navigate to={isLoggedin ? appPaths.workspaces : appPaths.login} />
           }
         ></Route>
         <Route path={appPaths.login} element={<LoginPage />}></Route>

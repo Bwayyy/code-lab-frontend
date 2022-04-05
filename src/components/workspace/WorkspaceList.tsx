@@ -27,8 +27,8 @@ export const WorkspaceList: FC = () => {
         <List
           bordered
           header={
-            <Space direction="horizontal">
-              <Typography.Title level={3}>Own Workspaces</Typography.Title>
+            <Row justify="space-between">
+              <Typography.Title level={5}>Own Workspaces</Typography.Title>
               <Button
                 icon={<PlusOutlined />}
                 type="primary"
@@ -39,7 +39,7 @@ export const WorkspaceList: FC = () => {
               >
                 Create Workspace
               </Button>
-            </Space>
+            </Row>
           }
           loading={loading}
           dataSource={workspaces?.filter((x) => x.membership?.role === "admin")}
@@ -72,7 +72,7 @@ export const WorkspaceList: FC = () => {
         <List
           bordered
           header={
-            <Typography.Title level={3}>Joined Workspaces</Typography.Title>
+            <Typography.Title level={5}>Joined Workspaces</Typography.Title>
           }
           loading={loading}
           dataSource={workspaces?.filter(

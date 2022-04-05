@@ -25,13 +25,6 @@ export const LiveCodingSection: FC = () => {
     liveCodingId,
     userData?.id
   );
-  useEffect(() => {
-    if (liveCoding?.isLive) {
-      message.success("This live coding session is started.");
-    } else {
-      message.warning("This live coding session is closed");
-    }
-  }, [liveCoding?.isLive]);
   const StatusBadge = () => {
     if (!liveCoding?.isLive)
       return <Badge color={"grey"} text={"Offline mode"} />;

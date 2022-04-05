@@ -9,9 +9,9 @@ export const PageLayout: FC = ({ children }) => {
       <Layout>
         <HeaderNavBar />
       </Layout>
+      <AppBreadcrumb />
       <Content style={{ margin: "12px 24px" }}>
-        <AppBreadcrumb />
-        <Content>{children}</Content>
+        <Content style={{ margin: "24px 0px" }}>{children}</Content>
       </Content>
     </>
   );

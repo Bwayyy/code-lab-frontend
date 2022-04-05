@@ -14,6 +14,7 @@ export const LoginPage: FC = () => {
   return (
     <Row justify="center">
       <Card
+        style={{ marginTop: "10%", width: "30%", minWidth: "400px" }}
         title="Login"
         actions={[
           <Button

@@ -39,7 +39,14 @@ export const AppBreadcrumb: FC = () => {
   });
   const breadcrumbItems = extraBreadcrumbItems;
   return (
-    <Breadcrumb separator=">" style={{ fontSize: 18 }}>
+    <Breadcrumb
+      separator=">"
+      style={{
+        fontSize: 18,
+        backgroundColor: "rgba(17, 128, 96,0.3)",
+        padding: "12px 24px",
+      }}
+    >
       {breadcrumbItems}
     </Breadcrumb>
   );
