@@ -1,18 +1,17 @@
 import "./App.css";
 import { Navigate, Route, Routes } from "react-router-dom";
 import { LoginPage } from "./components/common/LoginPage";
-import { LoggedInPageLayout } from "./components/common/LoggedInPageLayout";
+import { PageLayout } from "./components/common/PageLayout";
 import { WorkspaceList } from "./components/workspace/WorkspaceList";
 import { Workspace } from "./components/workspace/Workspace";
 import { appPaths } from "./utils/path";
 import { LiveCodingSection } from "./components/live-coding/LiveCodingSection";
 import { RegisterPage } from "./components/common/RegisterPage";
-import { AssignmentDetailPage } from "./components/assignment/AssignmentDetailPage";
-import { AssignmentGradingPage } from "./components/assignment/AssignmentGradingPage";
 import InvitationPage from "./components/workspace/InvitationPage";
 import { AskForLogin } from "./components/common/AskForLogin";
 import useUserData from "./hooks/useUserData";
 import useAuth from "./hooks/useAuth";
+import { AssignmentPage } from "./components/assignment/AssignmentPage";
 function App() {
   useAuth();
   const { isLoggedin } = useUserData();
@@ -31,9 +30,9 @@ function App() {
           path={appPaths.workspaces}
           element={
             <AskForLogin>
-              <LoggedInPageLayout>
+              <PageLayout>
                 <WorkspaceList />
-              </LoggedInPageLayout>
+              </PageLayout>
             </AskForLogin>
           }
         ></Route>
@@ -41,9 +40,9 @@ function App() {
           path={appPaths.workspaceDetail}
           element={
             <AskForLogin>
-              <LoggedInPageLayout>
+              <PageLayout>
                 <Workspace />
-              </LoggedInPageLayout>
+              </PageLayout>
             </AskForLogin>
           }
         ></Route>
@@ -51,29 +50,19 @@ function App() {
           path={appPaths.liveCoding}
           element={
             <AskForLogin>
-              <LoggedInPageLayout>
+              <PageLayout>
                 <LiveCodingSection />
-              </LoggedInPageLayout>
+              </PageLayout>
             </AskForLogin>
           }
         ></Route>
         <Route
-          path={appPaths.assignmentDetail}
+          path={appPaths.assignment}
           element={
             <AskForLogin>
-              <LoggedInPageLayout>
-                <AssignmentDetailPage></AssignmentDetailPage>
-              </LoggedInPageLayout>
-            </AskForLogin>
-          }
-        />
-        <Route
-          path={appPaths.assignmentGrading}
-          element={
-            <AskForLogin>
-              <LoggedInPageLayout>
-                <AssignmentGradingPage></AssignmentGradingPage>
-              </LoggedInPageLayout>
+              <PageLayout>
+                <AssignmentPage></AssignmentPage>
+              </PageLayout>
             </AskForLogin>
           }
         />

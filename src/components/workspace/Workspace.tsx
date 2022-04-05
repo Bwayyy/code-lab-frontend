@@ -41,12 +41,12 @@ export const Workspace: FC = () => {
   const liveCodingPopup = usePopup();
   const assignmentPopup = usePopup();
   const manageMemberPopup = usePopup();
-  const { id } = useParams();
+  const { workspaceId } = useParams();
   const workspace = useSelector(
     (state: RootState) => state.workspaces.currentWorkspace
   );
   const { isAdmin } = useWorkspaceRoleForUser(workspace?.id);
-  const { liveCodings } = useLiveCodingsQuery(id ?? "");
+  const { liveCodings } = useLiveCodingsQuery(workspaceId ?? "");
   const { assignments } = useAssignmentsQuery(workspace?.id);
   const { remove } = useLiveCodingMutation();
   if (!workspace) {
@@ -66,11 +66,7 @@ export const Workspace: FC = () => {
   };
   const onEnterAssignmentClick = (item: Assignment) => {
     dispatch(setCurrentAssignment(item));
-    if (isAdmin) {
-      navigate(`assignment/grading/${item.id}`);
-    } else {
-      navigate(`assignment/${item.id}`);
-    }
+    navigate(`assignment/${item.id}`);
   };
   const onAddAssignment = () => {
     assignmentPopup.showPopup("add");

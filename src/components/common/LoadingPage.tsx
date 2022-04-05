@@ -1,7 +1,7 @@
 import { Spin } from "antd";
 import { FC } from "react";
 
-const LoadingPage: FC<{ text: string }> = ({ text }) => {
+const LoadingPage: FC<{ text?: string }> = ({ text = "Wait a moment" }) => {
   return (
     <div
       style={{
@@ -12,7 +12,7 @@ const LoadingPage: FC<{ text: string }> = ({ text }) => {
         justifyContent: "center",
       }}
     >
-      <Spin tip="Just a moment" spinning={true}></Spin>
+      <Spin tip={text} spinning={true}></Spin>
     </div>
   );
 };

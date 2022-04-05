@@ -1,6 +1,7 @@
 import { collection, doc, setDoc } from "firebase/firestore";
 import { useMemo } from "react";
 import { useDocumentData } from "react-firebase-hooks/firestore";
+import useFirestoreErrorMessaging from "../../hooks/useFirestoreErrorMessaging";
 import { transformRepository } from "../data-transform/live-coding-transform";
 import { fireStore } from "../firebaseApp";
 import { liveCodingCollections } from "./livecoding-collection";
@@ -25,6 +26,7 @@ export const useRepositoryQuery = (parents: CollectionParents) => {
   const [data, loading, error] = useDocumentData(
     doc(fireStore, col.path + "/0")
   );
+  useFirestoreErrorMessaging(error);
   const repository = useMemo(() => transformRepository(data), [data]);
   return {
     repository,

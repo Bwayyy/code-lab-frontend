@@ -1,5 +1,6 @@
 import { collection } from "firebase/firestore";
 import { useCollectionData } from "react-firebase-hooks/firestore";
+import useFirestoreErrorMessaging from "../../hooks/useFirestoreErrorMessaging";
 import { transformLiveCoding } from "../data-transform/live-coding-transform";
 import { fireStore } from "../firebaseApp";
 import {
@@ -22,6 +23,7 @@ const collections = {
 export const useLiveCodingsQuery = (workspaceId?: string) => {
   const col = workspaceId ? collections.liveCodings.get(workspaceId) : null;
   const [data, loading, error] = useCollectionData(col, firestoreFetchOptions);
+  useFirestoreErrorMessaging(error);
   return {
     liveCodings: data?.map((x) => transformLiveCoding(x)),
     loading,

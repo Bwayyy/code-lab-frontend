@@ -10,6 +10,7 @@ import {
   useCollectionData,
   useDocumentData,
 } from "react-firebase-hooks/firestore";
+import useFirestoreErrorMessaging from "../../hooks/useFirestoreErrorMessaging";
 import { Assignment } from "../../types/assignment-types";
 import {
   transformAssignment,
@@ -57,6 +58,7 @@ type Parent = {
 export const useAssignmentsQuery = (workspaceId?: string) => {
   const col = workspaceId ? collections.assignments.get(workspaceId) : null;
   const [data, loading, error] = useCollectionData(col, firestoreFetchOptions);
+  useFirestoreErrorMessaging(error);
   return {
     assignments: data?.map((x) => transformAssignment(x)),
     loading,
@@ -73,6 +75,7 @@ export const useAssignmentSubmissionsQuery = ({
     col = collections.submissions.get(workspaceId, assignmentId);
   }
   const [data, loading, error] = useCollectionData(col, firestoreFetchOptions);
+  useFirestoreErrorMessaging(error);
   return {
     submissions: data?.map((x) => transformAssignmentSubmission(x)),
     loading,
@@ -92,6 +95,7 @@ export const useSubmissionDocByIdQuery = (
     docRef = doc(fireStore, path);
   }
   const [data, loading, error] = useDocumentData(docRef, firestoreFetchOptions);
+  useFirestoreErrorMessaging(error);
   return {
     submission: data ? transformAssignmentSubmission(data) : undefined,
     loading,
@@ -108,6 +112,7 @@ export const useAssignmentDocByIdQuery = ({
     docRef = collections.assignments.getDoc(workspaceId, assignmentId);
   }
   const [data, loading, error] = useDocumentData(docRef, firestoreFetchOptions);
+  useFirestoreErrorMessaging(error);
   return {
     assignment: data ? transformAssignment(data) : undefined,
     loading,

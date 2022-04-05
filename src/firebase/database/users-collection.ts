@@ -11,6 +11,7 @@ import {
   useCollectionData,
   useDocumentData,
 } from "react-firebase-hooks/firestore";
+import useFirestoreErrorMessaging from "../../hooks/useFirestoreErrorMessaging";
 import { transformUser } from "../data-transform/user-transform";
 import { fireStore } from "../firebaseApp";
 import { firestoreFetchOptions } from "./workspace-collection";
@@ -28,6 +29,7 @@ export const useUserQuery = (id?: string) => {
     docRef = collections.users.getDoc(id);
   }
   const [data, loading, error] = useDocumentData(docRef);
+  useFirestoreErrorMessaging(error);
   return { user: data ? transformUser(data) : data, loading, error };
 };
 
@@ -42,5 +44,6 @@ export const useUsersByKeysQuery = (keys?: string[]) => {
   const col = collections.users.get();
   const q = keys ? query(col, where(documentId(), "in", keys)) : null;
   const [data, loading, error] = useCollectionData(q, firestoreFetchOptions);
+  useFirestoreErrorMessaging(error);
   return { users: data?.map((x) => transformUser(x)) ?? [], loading, error };
 };
