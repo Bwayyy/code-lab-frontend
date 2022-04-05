@@ -44,4 +44,9 @@ export const saveRepository = async (
   return await setDoc(ref, { json });
 };
 
+export const addEmptyRepository = async (parent: CollectionParents) => {
+  const col = collections.repository.get(parent);
+  const newDoc = doc(col, "0");
+  return setDoc(newDoc, { json: JSON.stringify([]) });
+};
 export const repositoryCollections = collections;

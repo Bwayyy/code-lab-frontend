@@ -1,10 +1,14 @@
-import { collection, doc, setDoc } from "firebase/firestore";
+import { addDoc, collection, deleteDoc, doc, setDoc } from "firebase/firestore";
 import {
   useCollectionData,
   useDocumentData,
 } from "react-firebase-hooks/firestore";
 import useFirestoreErrorMessaging from "../../hooks/useFirestoreErrorMessaging";
-import { UserRoomPermissionBody } from "../../types/live-coding-types";
+import {
+  LiveCodingRoom,
+  LiveCodingRoomBody,
+  UserRoomPermissionBody,
+} from "../../types/live-coding-types";
 import {
   transformLiveCoding,
   transformPermission,
@@ -28,6 +32,12 @@ const collections = {
           workspaceId +
           "/" +
           "liveCodings"
+      ),
+    getDoc: (workspaceId: string, liveCodingId: string) =>
+      doc(
+        fireStore,
+        collections.liveCodings.get(workspaceId).path,
+        liveCodingId
       ),
   },
   userPermission: {
@@ -88,4 +98,34 @@ export const updatePermission = (
     return setDoc(docRef, permission);
   }
 };
+
+export const addLiveCoding = (
+  workspaceId?: string,
+  data?: LiveCodingRoomBody
+) => {
+  if (workspaceId) {
+    const col = collections.liveCodings.get(workspaceId);
+    return addDoc(col, data);
+  }
+};
+export const updateLiveCoding = (
+  workspaceId?: string,
+  liveCodingId?: string,
+  data?: LiveCodingRoomBody
+) => {
+  if (workspaceId && liveCodingId) {
+    const doc = collections.liveCodings.getDoc(workspaceId, liveCodingId);
+    return setDoc(doc, data);
+  }
+};
+export const deleteLiveCoding = (
+  workspaceId?: string,
+  liveCodingId?: string
+) => {
+  if (workspaceId && liveCodingId) {
+    const doc = collections.liveCodings.getDoc(workspaceId, liveCodingId);
+    return deleteDoc(doc);
+  }
+};
+
 export const liveCodingCollections = collections;

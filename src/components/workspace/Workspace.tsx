@@ -13,7 +13,6 @@ import { Moment } from "moment";
 import { FC } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
-import useLiveCodingMutation from "../../hooks/live-coding/useLiveCodingMutation";
 import usePopup from "../../hooks/usePopup";
 import useMomentFormat from "../../hooks/utils/useMomentFormat";
 import useWorkspaceRoleForUser from "../../hooks/workspace/useWorkspaceRoleForUser";
@@ -26,7 +25,10 @@ import { AssignemntInfoDrawer } from "./AssignmentInfoDrawer";
 import { LiveCodingInfoDrawer } from "./LiveCodingInfoDrawer";
 import InviteLinkPopover from "./InviteLinkPopover";
 import ManageMembersDrawer from "./ManageMembersDrawer";
-import { useLiveCodingsQuery } from "../../firebase/database/livecoding-collection";
+import {
+  deleteLiveCoding,
+  useLiveCodingsQuery,
+} from "../../firebase/database/livecoding-collection";
 import {
   deleteAssignment,
   useAssignmentsQuery,
@@ -46,7 +48,6 @@ export const Workspace: FC = () => {
   const { isAdmin } = useWorkspaceRoleForUser(workspace?.id);
   const { liveCodings } = useLiveCodingsQuery(workspaceId ?? "");
   const { assignments } = useAssignmentsQuery(workspace?.id);
-  const { remove } = useLiveCodingMutation();
   if (!workspace) {
     return <span>No Workspace Selected</span>;
   }
@@ -57,10 +58,11 @@ export const Workspace: FC = () => {
   const onAddLiveCoding = () => {
     liveCodingPopup.showPopup("add");
   };
-  const onRemoveLiveCoding = async (ref: DocumentReference) => {
-    await remove(ref);
-    message.success("The Live Coding Room is removed");
-    liveCodingPopup.closePopup();
+  const onRemoveLiveCoding = (liveCodingId: string) => {
+    return deleteLiveCoding(workspaceId, liveCodingId)?.then(() => {
+      message.success("The Live Coding Room is removed");
+      liveCodingPopup.closePopup();
+    });
   };
   const onEnterAssignmentClick = (item: Assignment) => {
     dispatch(setCurrentAssignment(item));
@@ -126,7 +128,7 @@ export const Workspace: FC = () => {
                       isAdmin ? (
                         <Popconfirm
                           title="Are you sure?"
-                          onConfirm={() => onRemoveLiveCoding(item.ref)}
+                          onConfirm={() => onRemoveLiveCoding(item.id)}
                         >
                           <Button danger type="primary" disabled={!isAdmin}>
                             Close

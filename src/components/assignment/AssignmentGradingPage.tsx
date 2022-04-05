@@ -8,6 +8,7 @@ import {
   PageHeader,
   Popconfirm,
   Space,
+  Typography,
 } from "antd";
 import moment, { Moment } from "moment";
 import { FC, useState } from "react";
@@ -22,7 +23,6 @@ import { SubmissionDetailSection } from "./SubmissionDetailSection";
 
 export const AssignmentGradingPage: FC = () => {
   const { workspaceId, assignmentId } = useParams();
-  console.log(workspaceId, assignmentId);
   const { submissions } = useAssignmentSubmissionsQuery({
     workspaceId,
     assignmentId,
@@ -38,33 +38,31 @@ export const AssignmentGradingPage: FC = () => {
   const isBeforeDeadline = moment().isBefore(assignment?.deadline as Moment);
   return (
     <PageHeader title={"View / Grade Assignment"}>
-      <PageHeader title="Submissions">
-        <List
-          dataSource={submissions}
-          renderItem={(item) => (
-            <List.Item
-              actions={[
-                <Button
-                  type="primary"
-                  onClick={() => {
-                    showPopup("add");
-                    setSubmission(item);
-                  }}
-                >
-                  View
-                </Button>,
-              ]}
-            >
-              <List.Item.Meta
-                title={item.userName}
-                description={
-                  "Submitted at" + formatTimeStamp(item.submitted_at)
-                }
-              ></List.Item.Meta>
-            </List.Item>
-          )}
-        ></List>
-      </PageHeader>
+      <List
+        bordered
+        header={<Typography.Title level={5}>Submissions</Typography.Title>}
+        dataSource={submissions}
+        renderItem={(item) => (
+          <List.Item
+            actions={[
+              <Button
+                type="primary"
+                onClick={() => {
+                  showPopup("add");
+                  setSubmission(item);
+                }}
+              >
+                View
+              </Button>,
+            ]}
+          >
+            <List.Item.Meta
+              title={item.userName}
+              description={"Submitted at" + formatTimeStamp(item.submitted_at)}
+            ></List.Item.Meta>
+          </List.Item>
+        )}
+      ></List>
       <Drawer
         title={"Submission from " + submission?.userName}
         visible={visible}

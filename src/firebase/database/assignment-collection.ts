@@ -1,3 +1,4 @@
+import { message } from "antd";
 import {
   addDoc,
   collection,
@@ -120,13 +121,10 @@ export const useAssignmentDocByIdQuery = ({
   };
 };
 
-export const createAssignemnt = (
-  { workspaceId, assignmentId }: Parent,
-  data: Assignment
-) => {
-  if (workspaceId && assignmentId) {
+export const createAssignemnt = (workspaceId?: string, data?: Assignment) => {
+  if (workspaceId) {
     const col = collections.assignments.get(workspaceId);
-    return addDoc(col, data);
+    return addDoc(col, data).catch((err) => message.error(err.message));
   }
 };
 

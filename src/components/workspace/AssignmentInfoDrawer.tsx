@@ -18,7 +18,7 @@ export const AssignemntInfoDrawer: FC<PopupProps> = ({
   visible,
   close,
 }) => {
-  const { workspaceId, assignmentId } = useParams();
+  const { workspaceId } = useParams();
   const onFinish = async () => {
     const values = form?.getFieldsValue(true);
     const deadlineTimestamp = Timestamp.fromDate(
@@ -30,7 +30,7 @@ export const AssignemntInfoDrawer: FC<PopupProps> = ({
       maxScore: parseInt(values.maxScore),
     };
     if (action === "add") {
-      await createAssignemnt({ workspaceId, assignmentId }, normalized);
+      await createAssignemnt(workspaceId, normalized);
       message.success("A new assignment is created");
     } else if (action === "edit") {
       await updateAssignment(normalized);

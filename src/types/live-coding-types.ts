@@ -1,10 +1,11 @@
 import { EntityBase, FirestoreEntity } from "../components/common/shared-types";
 
-export type LiveCodingRoom = {
+export type LiveCodingRoom = LiveCodingRoomBody & FirestoreEntity;
+export type LiveCodingRoomBody = {
+  name: string;
   isLive: boolean;
   description: string;
-} & EntityBase &
-  FirestoreEntity;
+};
 export type LiveCodingUser = {
   userId?: string;
   userName?: string;

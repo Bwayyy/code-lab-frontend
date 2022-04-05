@@ -2,7 +2,12 @@ import { Button, Drawer, Input, Space } from "antd";
 import { Form } from "antd";
 import TextArea from "antd/lib/input/TextArea";
 import { FC, useMemo } from "react";
-import useLiveCodingMutation from "../../hooks/live-coding/useLiveCodingMutation";
+import { useParams } from "react-router-dom";
+import {
+  addLiveCoding,
+  updateLiveCoding,
+} from "../../firebase/database/livecoding-collection";
+import { LiveCodingRoomBody } from "../../types/live-coding-types";
 import { PopupProps } from "../common/shared-types";
 
 export const LiveCodingInfoDrawer: FC<PopupProps> = ({
@@ -11,13 +16,18 @@ export const LiveCodingInfoDrawer: FC<PopupProps> = ({
   visible,
   close,
 }) => {
-  const { create, update } = useLiveCodingMutation();
+  const { workspaceId } = useParams();
   const onFinish = () => {
     const values = form?.getFieldsValue(true);
+    const body: LiveCodingRoomBody = {
+      name: values.name,
+      description: values.description,
+      isLive: false,
+    };
     if (action === "add") {
-      create(values);
+      addLiveCoding(workspaceId, body);
     } else if (action === "edit") {
-      update(values);
+      updateLiveCoding(workspaceId, values.id, body);
     }
     close();
   };
