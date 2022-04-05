@@ -1,14 +1,14 @@
-import { Button, Divider, Dropdown, Menu, Row, Tree } from "antd";
+import { Button, Dropdown, Menu, Row, Tree } from "antd";
 import { FC, Key, useEffect, useState } from "react";
 import useFileTree from "../../hooks/file-directory/useFileTree";
 import {
   FileTreeNode,
   RepositoryFile,
 } from "../../types/file-repository-types";
-import { AiOutlineFileAdd, AiOutlineFolderAdd } from "react-icons/ai";
 import { InputPopover } from "../common/atoms/InputPopover";
 import { KeyPressInput } from "../common/atoms/KeyPressInput";
 import useFileTabs from "../../hooks/file-directory/useFileTabs";
+import { FileAddOutlined, FolderAddOutlined } from "@ant-design/icons";
 const { DirectoryTree } = Tree;
 const FileDirectory: FC = () => {
   const [inputInitialValue, setInputInitialValue] = useState("");
@@ -59,20 +59,24 @@ const FileDirectory: FC = () => {
         >
           <Button
             type="link"
-            icon={<AiOutlineFileAdd size={24} />}
+            icon={<FileAddOutlined style={{ fontSize: 18 }} />}
             onClick={() => {
               setNewEntityType("file");
               setPopoverVisible(true);
             }}
-          ></Button>
+          >
+            New File
+          </Button>
           <Button
             type="link"
-            icon={<AiOutlineFolderAdd size={24} />}
+            icon={<FolderAddOutlined style={{ fontSize: 18 }} />}
             onClick={() => {
               setNewEntityType("folder");
               setPopoverVisible(true);
             }}
-          ></Button>
+          >
+            New Folder
+          </Button>
         </InputPopover>
       </Row>
       <DirectoryTree

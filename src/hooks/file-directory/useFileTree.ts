@@ -8,6 +8,7 @@ import _ from "lodash";
 import { message } from "antd";
 import useFileTabs from "./useFileTabs";
 import useRepository from "./useRepository";
+import { Console } from "console";
 export default function useFileTree() {
   const { repository, addFile, deleteFile, saveRepository } = useRepository();
   const { remove: removeTab } = useFileTabs();
@@ -132,8 +133,10 @@ export default function useFileTree() {
     );
     saveToRepository();
   };
-  const remove = async (key: number, fileId: string) => {
-    await deleteFile(fileId);
+  const remove = async (key: number, fileId?: string) => {
+    if (fileId) {
+      await deleteFile(fileId);
+    }
     crawl(
       rootNode,
       (node, context) => {
