@@ -8,6 +8,7 @@ export const WorkspaceFilter: FC = ({ children }) => {
   const { workspaceId } = useParams();
   const { userData } = useUserData();
   const filter = async () => {
+    console.log({ workspaceId, userData });
     if (workspaceId && userData) {
       const docs = await getMemberhipForUserAndWorkspace(
         workspaceId,

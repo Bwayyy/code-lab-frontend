@@ -7,8 +7,9 @@ type AskForLoginProps = {
 };
 const AskForLogin: FC<AskForLoginProps> = ({ children }) => {
   const location = useLocation();
-  const { isLoggedin, loading } = useUserData();
-  if (loading) return <LoadingPage text="Wait a Moment" />;
+  const { isLoggedin, loading, userData } = useUserData();
+  if (loading || userData === undefined)
+    return <LoadingPage text="Wait a Moment" />;
   if (isLoggedin) return children;
   return <Navigate to="/login" state={{ from: location.pathname }} />;
 };

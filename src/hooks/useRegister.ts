@@ -15,7 +15,6 @@ export default function useRegister() {
     try {
       setLoading(true);
       const user = await createUserWithEmailAndPassword(auth, email, password);
-      console.log({ user });
       await updateProfile(user.user, { displayName: userDisplayName });
       await addUser(user.user.uid, { displayName: userDisplayName });
       message.success("Register Successfully");
