@@ -35,6 +35,7 @@ import {
   deleteAssignment,
   useAssignmentsQuery,
 } from "../../firebase/database/assignment-collection";
+import { removeAllTabs } from "../../reducers/FileRepositorySlice";
 export const Workspace: FC = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -53,6 +54,7 @@ export const Workspace: FC = () => {
     return <span>No Workspace Selected</span>;
   }
   const onEnterRoomClick = (item: LiveCodingRoom) => {
+    dispatch(removeAllTabs());
     dispatch(setCurrentLiveCodingRoom(item));
     navigate(`liveCoding/${item.id}`);
   };

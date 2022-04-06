@@ -29,11 +29,14 @@ export const fileRepositorySlice = createSlice({
       state.activeTabKey = action.payload;
       state.activeFile = state.tabFiles.find((x) => x.key === action.payload);
     },
+    removeAllTabs: (state) => {
+      state.tabFiles = [];
+    },
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { addFileToTab, removeTab, setActiveTabKey } =
+export const { addFileToTab, removeTab, setActiveTabKey, removeAllTabs } =
   fileRepositorySlice.actions;
 
 export default fileRepositorySlice.reducer;

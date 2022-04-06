@@ -19,9 +19,13 @@ export default function useYjs({ room }: { room: string }) {
     return doc;
   };
   const initProvider = (doc: Y.Doc) => {
+    var randomColor = Math.floor(Math.random() * 16777215).toString(16);
     provider?.destroy();
     const wsProvider = new WebsocketProvider("ws://localhost:1234", room, doc);
-    wsProvider.awareness.setLocalState({ username: userData?.displayName });
+    wsProvider.awareness.setLocalStateField("user", {
+      name: userData?.displayName,
+      color: "#" + randomColor,
+    });
     setProvider(wsProvider);
   };
   useEffect(() => {
