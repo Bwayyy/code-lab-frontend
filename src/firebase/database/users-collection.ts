@@ -5,6 +5,7 @@ import {
   getDoc,
   query,
   where,
+  setDoc,
 } from "firebase/firestore";
 import {
   useCollectionData,
@@ -45,4 +46,9 @@ export const useUsersByKeysQuery = (keys?: string[]) => {
   const [data, loading, error] = useCollectionData(q, firestoreFetchOptions);
   useFirestoreErrorMessaging(error);
   return { users: data?.map((x) => transformUser(x)) ?? [], loading, error };
+};
+
+export const addUser = (userId: string, data: { displayName: string }) => {
+  const docRef = collections.users.getDoc(userId);
+  return setDoc(docRef, data);
 };
