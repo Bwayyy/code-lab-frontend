@@ -1,5 +1,7 @@
 {
   "projects": {
-    "default": "code-labs-e4e35"
-  }
+    "default": "code-classroom-prod",
+    "production": "code-classroom-prod"
+  },
+  "targets": {}
 }
