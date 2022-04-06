@@ -1,8 +1,6 @@
-import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   addFileToTab,
-  removeAllTabs,
   removeTab,
   setActiveTabKey,
 } from "../../reducers/FileRepositorySlice";

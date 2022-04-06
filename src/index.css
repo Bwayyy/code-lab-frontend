@@ -40,3 +40,6 @@ code {
   padding-right: 2px;
   z-index: 3;
 }
+.primary{
+  color: rgba(17, 128, 96)
+}

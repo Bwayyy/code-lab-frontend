@@ -1,7 +1,6 @@
 import { Button, Descriptions, PageHeader, Space, Upload } from "antd";
 import { Moment } from "moment";
 import { FC } from "react";
-import { AiOutlineUpload } from "react-icons/ai";
 import { useParams } from "react-router-dom";
 import {
   useAssignmentDocByIdQuery,
@@ -12,7 +11,7 @@ import useAssignmentUpload from "../../hooks/assignments/useAssignmentUpload";
 import useUserData from "../../hooks/useUserData";
 import useMomentFormat from "../../hooks/utils/useMomentFormat";
 import { SubmissionDetailSection } from "./SubmissionDetailSection";
-
+import { UploadOutlined } from "@ant-design/icons";
 export const AssignmentDetailPage: FC = () => {
   const { workspaceId, assignmentId } = useParams();
   const { files, setFiles, submitFiles } = useAssignmentUpload();
@@ -31,16 +30,19 @@ export const AssignmentDetailPage: FC = () => {
     <PageHeader
       title={
         <span>
-          Assignment <b>{assignment.name}</b> in {workspace?.name}
+          Assignment <b className="primary">{assignment.name}</b> in{" "}
+          <b className="primary">{workspace?.name}</b>
         </span>
       }
     >
       <Space direction="vertical">
         <Descriptions
+          bordered
           title="Assignment Infomation"
           size="small"
           layout="vertical"
           column={{ xs: 1, sm: 2, md: 2 }}
+          labelStyle={{ fontWeight: "bold" }}
         >
           <Descriptions.Item label="Name">{assignment.name}</Descriptions.Item>
           <Descriptions.Item label="Due Date">
@@ -69,7 +71,7 @@ export const AssignmentDetailPage: FC = () => {
                   setFiles(fileList);
                 }}
               >
-                <Button icon={<AiOutlineUpload />}>Click to Upload</Button>
+                <Button icon={<UploadOutlined />}>Click to Upload</Button>
               </Upload>
               <Button
                 type="primary"

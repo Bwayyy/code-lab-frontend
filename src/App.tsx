@@ -13,6 +13,7 @@ import useUserData from "./hooks/useUserData";
 import useAuth from "./hooks/useAuth";
 import { AssignmentPage } from "./components/assignment/AssignmentPage";
 import LoadingPage from "./components/common/LoadingPage";
+import { WorkspaceFilter } from "./components/access-filters/WorkspaceFilter";
 function App() {
   useAuth();
   const { loading, isLoggedin } = useUserData();
@@ -42,9 +43,11 @@ function App() {
           path={appPaths.workspaceDetail}
           element={
             <AskForLogin>
-              <PageLayout>
-                <Workspace />
-              </PageLayout>
+              <WorkspaceFilter>
+                <PageLayout>
+                  <Workspace />
+                </PageLayout>
+              </WorkspaceFilter>
             </AskForLogin>
           }
         ></Route>
@@ -52,9 +55,11 @@ function App() {
           path={appPaths.liveCoding}
           element={
             <AskForLogin>
-              <PageLayout>
-                <LiveCodingSection />
-              </PageLayout>
+              <WorkspaceFilter>
+                <PageLayout>
+                  <LiveCodingSection />
+                </PageLayout>
+              </WorkspaceFilter>
             </AskForLogin>
           }
         ></Route>
@@ -62,9 +67,11 @@ function App() {
           path={appPaths.assignment}
           element={
             <AskForLogin>
-              <PageLayout>
-                <AssignmentPage></AssignmentPage>
-              </PageLayout>
+              <WorkspaceFilter>
+                <PageLayout>
+                  <AssignmentPage></AssignmentPage>
+                </PageLayout>
+              </WorkspaceFilter>
             </AskForLogin>
           }
         />

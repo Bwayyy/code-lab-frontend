@@ -122,4 +122,17 @@ export const updateWorkspace = (
   const docRef = collections.workspaces.getDoc(id);
   return setDoc(docRef, workspace);
 };
+
+export const getMemberhipForUserAndWorkspace = (
+  workspaceId: string,
+  userId: string
+) => {
+  const col = collections.members.get();
+  const q = query(
+    col,
+    where("userId", "==", userId),
+    where("workspaceId", "==", workspaceId)
+  );
+  return getDocs(q);
+};
 export const WorkspaceCollections = collections;

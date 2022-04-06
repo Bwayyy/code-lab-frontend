@@ -2,7 +2,6 @@ import { FC } from "react";
 import { Menu, Space } from "antd";
 import SubMenu from "antd/lib/menu/SubMenu";
 import { Header } from "antd/lib/layout/layout";
-import { Link } from "react-router-dom";
 import useUserData from "../../hooks/useUserData";
 import { AiOutlineUser } from "react-icons/ai";
 import useAuthActions from "../../hooks/useAuthActions";
