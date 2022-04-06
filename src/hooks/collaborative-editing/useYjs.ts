@@ -21,7 +21,11 @@ export default function useYjs({ room }: { room: string }) {
   const initProvider = (doc: Y.Doc) => {
     var randomColor = Math.floor(Math.random() * 16777215).toString(16);
     provider?.destroy();
-    const wsProvider = new WebsocketProvider("ws://localhost:1234", room, doc);
+    const wsProvider = new WebsocketProvider(
+      process.env.REACT_APP_CODE_WS_SERVER as string,
+      room,
+      doc
+    );
     wsProvider.awareness.setLocalStateField("user", {
       name: userData?.displayName,
       color: "#" + randomColor,
