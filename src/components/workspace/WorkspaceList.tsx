@@ -4,10 +4,7 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import usePopup from "../../hooks/usePopup";
 import useWorkspacesForUser from "../../hooks/workspace/useWorkspacesForUser";
-import {
-  setCurrentMembership,
-  setCurrentWorkspace,
-} from "../../reducers/workspaceSlice";
+import { setCurrentMembership } from "../../reducers/workspaceSlice";
 import { WorkspaceAndMembership } from "../../types/workspace-types";
 import WorkspaceDrawer from "./WorkspaceDrawer";
 import { PlusOutlined } from "@ant-design/icons";
@@ -17,7 +14,6 @@ export const WorkspaceList: FC = () => {
   const dispatch = useDispatch();
   const onEnterClick = (item: WorkspaceAndMembership) => {
     navigate(item.workspace.id);
-    dispatch(setCurrentWorkspace(item.workspace));
     dispatch(setCurrentMembership(item.membership));
   };
   const createWorkspacePopup = usePopup();

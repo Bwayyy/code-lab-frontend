@@ -39,15 +39,14 @@ export const useWorkspaceDocQuery = (workspaceId?: string) => {
   if (workspaceId) {
     docRef = collections.workspaces.getDoc(workspaceId);
   }
-  const [data, loading, error] = useDocumentData(docRef);
+  const [data, loading, error] = useDocumentData(docRef, firestoreFetchOptions);
   useFirestoreErrorMessaging(error);
   return { workspace: data ? transformWorkspace(data) : data, loading, error };
 };
-export const useMembersQuery = (workspaceId: string) => {
-  const q = query(
-    collections.members.get(),
-    where("workspaceId", "==", workspaceId)
-  );
+export const useMembersQuery = (workspaceId?: string) => {
+  const q = workspaceId
+    ? query(collections.members.get(), where("workspaceId", "==", workspaceId))
+    : null;
   const [members, loading, error] = useCollectionData(q, firestoreFetchOptions);
   useFirestoreErrorMessaging(error);
   return {
@@ -135,4 +134,5 @@ export const getMemberhipForUserAndWorkspace = (
   );
   return getDocs(q);
 };
+
 export const WorkspaceCollections = collections;

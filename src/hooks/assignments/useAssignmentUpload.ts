@@ -6,42 +6,49 @@ import { useState } from "react";
 import { useSelector } from "react-redux";
 import { firebaseStorage, fireStore } from "../../firebase/firebaseApp";
 import { RootState } from "../../store";
+import { Assignment } from "../../types/assignment-types";
 import useFirebaseStoragePath from "../useFirebaseStoragePath";
 import useFirestoreRefPath from "../useFirestoreRefPath";
 import useUserData from "../useUserData";
 
-export default function useAssignmentUpload() {
+export default function useAssignmentUpload(assignment?: Assignment) {
   const { getAssignmentSubmissionFolderPath } = useFirebaseStoragePath();
   const { getAssignmentSubmissionPath } = useFirestoreRefPath();
   const [files, setFiles] = useState<UploadFile[]>([]);
+  const [loading, setLoading] = useState(false);
   const workspace = useSelector(
     (state: RootState) => state.workspaces.currentWorkspace
-  );
-  const assignment = useSelector(
-    (state: RootState) => state.assignments.currentAssignment
   );
   const { userData } = useUserData();
   const submitFiles = async () => {
     if (workspace && assignment && userData) {
-      await removeExistingFiles();
-      const folderPath = getAssignmentSubmissionFolderPath(
-        workspace.id,
-        assignment.id,
-        userData.id
-      );
-      const promises = [];
-      for (const file of files) {
-        const storageRef = ref(firebaseStorage, folderPath + "/" + file.name);
-        promises.push(uploadBytes(storageRef, file.originFileObj as Blob));
+      setLoading(true);
+      try {
+        await removeExistingFiles();
+        const folderPath = getAssignmentSubmissionFolderPath(
+          workspace.id,
+          assignment.id,
+          userData.id
+        );
+        const promises = [];
+        for (const file of files) {
+          const storageRef = ref(firebaseStorage, folderPath + "/" + file.name);
+          promises.push(uploadBytes(storageRef, file.originFileObj as Blob));
+        }
+        const responses = await Promise.all(promises).catch((err) => {
+          message.error("Upload failed, please try again later.");
+          removeExistingFiles();
+        });
+        if (responses) {
+          await writeSubmissionRecordToDb(folderPath);
+        }
+        message.success("Submission Success!");
+      } catch (err) {
+        message.error(err as any);
+        return;
+      } finally {
+        setLoading(false);
       }
-      const responses = await Promise.all(promises).catch((err) => {
-        message.error("Upload failed, please try again later.");
-        removeExistingFiles();
-      });
-      if (responses) {
-        await writeSubmissionRecordToDb(folderPath);
-      }
-      message.success("Submission Success!");
     }
   };
   const removeExistingFiles = async () => {
@@ -71,5 +78,5 @@ export default function useAssignmentUpload() {
       });
     }
   };
-  return { files, setFiles, submitFiles };
+  return { files, setFiles, submitFiles, loading };
 }

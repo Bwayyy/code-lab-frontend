@@ -1,5 +1,5 @@
 import { Breadcrumb } from "antd";
-import { FC } from "react";
+import { FC, useMemo } from "react";
 import { useSelector } from "react-redux";
 import { Link, useLocation } from "react-router-dom";
 import { RootState } from "../../../store";
@@ -20,12 +20,15 @@ export const AppBreadcrumb: FC = () => {
       .replace(":liveCodingId", liveCoding?.id ?? "")
       .replace(":assignmentId", assignment?.id ?? "");
   };
-  const breadcrumbNameMap = {
-    [replaceId(appPaths.workspaces)]: "Workspaces",
-    [replaceId(appPaths.workspaceDetail)]: workspace?.name,
-    [replaceId(appPaths.liveCoding)]: `LiveCoding - ${liveCoding?.name}`,
-    [replaceId(appPaths.assignment)]: `Assignment - ${assignment?.name}`,
-  };
+  const breadcrumbNameMap = useMemo(
+    () => ({
+      [replaceId(appPaths.workspaces)]: "Workspaces",
+      [replaceId(appPaths.workspaceDetail)]: workspace?.name,
+      [replaceId(appPaths.liveCoding)]: `LiveCoding - ${liveCoding?.name}`,
+      [replaceId(appPaths.assignment)]: `Assignment - ${assignment?.name}`,
+    }),
+    [replaceId, workspace, liveCoding, assignment]
+  );
   const location = useLocation();
   const pathSnippets = location.pathname.split("/").filter((i) => i);
   const extraBreadcrumbItems = pathSnippets.map((_, index) => {

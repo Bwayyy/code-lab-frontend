@@ -1,6 +1,6 @@
 import { Button, Descriptions, PageHeader, Space, Upload } from "antd";
 import { Moment } from "moment";
-import { FC } from "react";
+import { FC, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import {
   useAssignmentDocByIdQuery,
@@ -12,9 +12,11 @@ import useUserData from "../../hooks/useUserData";
 import useMomentFormat from "../../hooks/utils/useMomentFormat";
 import { SubmissionDetailSection } from "./SubmissionDetailSection";
 import { UploadOutlined } from "@ant-design/icons";
+import { setCurrentAssignment } from "../../reducers/assignmentSlice";
+import { useDispatch } from "react-redux";
 export const AssignmentDetailPage: FC = () => {
+  const dispatch = useDispatch();
   const { workspaceId, assignmentId } = useParams();
-  const { files, setFiles, submitFiles } = useAssignmentUpload();
   const { userData } = useUserData();
   const { workspace } = useWorkspaceDocQuery(workspaceId);
   const { submission } = useSubmissionDocByIdQuery(
@@ -26,6 +28,13 @@ export const AssignmentDetailPage: FC = () => {
     workspaceId,
     assignmentId,
   });
+  const { files, setFiles, submitFiles, loading } =
+    useAssignmentUpload(assignment);
+  useEffect(() => {
+    if (assignment) {
+      dispatch(setCurrentAssignment(assignment));
+    }
+  }, [assignment]);
   return assignment ? (
     <PageHeader
       title={
@@ -75,8 +84,11 @@ export const AssignmentDetailPage: FC = () => {
               </Upload>
               <Button
                 type="primary"
+                loading={loading}
                 disabled={files.length === 0}
-                onClick={() => submitFiles()}
+                onClick={() =>
+                  submitFiles().then(() => window.location.reload())
+                }
               >
                 Submit
               </Button>

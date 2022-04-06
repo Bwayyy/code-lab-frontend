@@ -14,8 +14,11 @@ import useAuth from "./hooks/useAuth";
 import { AssignmentPage } from "./components/assignment/AssignmentPage";
 import LoadingPage from "./components/common/LoadingPage";
 import { WorkspaceFilter } from "./components/access-filters/WorkspaceFilter";
+import { useCurrentWorkspace } from "./hooks/workspace/useCurrentWorkspace";
 function App() {
   useAuth();
+  useCurrentWorkspace();
+
   const { loading, isLoggedin } = useUserData();
   if (loading) return <LoadingPage />;
   return (

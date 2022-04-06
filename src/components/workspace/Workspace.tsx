@@ -20,7 +20,6 @@ import useMomentFormat from "../../hooks/utils/useMomentFormat";
 import useWorkspaceRoleForUser from "../../hooks/workspace/useWorkspaceRoleForUser";
 import { setCurrentAssignment } from "../../reducers/assignmentSlice";
 import { setCurrentLiveCodingRoom } from "../../reducers/liveCodingSlice";
-import { RootState } from "../../store";
 import { Assignment } from "../../types/assignment-types";
 import { LiveCodingRoom } from "../../types/live-coding-types";
 import { AssignemntInfoDrawer } from "./AssignmentInfoDrawer";
@@ -36,6 +35,7 @@ import {
   useAssignmentsQuery,
 } from "../../firebase/database/assignment-collection";
 import { removeAllTabs } from "../../reducers/FileRepositorySlice";
+import { RootState } from "../../store";
 export const Workspace: FC = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -47,9 +47,9 @@ export const Workspace: FC = () => {
   const workspace = useSelector(
     (state: RootState) => state.workspaces.currentWorkspace
   );
-  const { isAdmin } = useWorkspaceRoleForUser(workspace?.id);
+  const { isAdmin } = useWorkspaceRoleForUser(workspaceId);
   const { liveCodings } = useLiveCodingsQuery(workspaceId ?? "");
-  const { assignments } = useAssignmentsQuery(workspace?.id);
+  const { assignments } = useAssignmentsQuery(workspaceId);
   if (!workspace) {
     return <span>No Workspace Selected</span>;
   }

@@ -28,7 +28,7 @@ export const HeaderNavBar: FC = () => {
         </span>
         <Menu mode="horizontal" triggerSubMenuAction="click">
           <SubMenu
-            icon={<AiOutlineUser />}
+            icon={<AiOutlineUser style={{ marginRight: 8 }} />}
             style={{ marginLeft: "auto" }}
             title={`${userData?.displayName}`}
           >
