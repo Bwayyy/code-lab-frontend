@@ -1,6 +1,6 @@
 import { Badge, Button, Row, Space, Spin } from "antd";
 import { updateDoc } from "firebase/firestore";
-import { FC } from "react";
+import { FC, useState } from "react";
 import { useParams } from "react-router-dom";
 import { PresenceProvider } from "y-presence";
 import {
@@ -14,6 +14,7 @@ import useWorkspaceRoleForUser from "../../hooks/workspace/useWorkspaceRoleForUs
 import CodeEditor from "./CodeEditor";
 import LiveUserListButton from "./LiveUserListButton";
 export const LiveCodingSection: FC = () => {
+  const [isOfflineEdit, setOfflineEdit] = useState(false);
   const { roomName } = useRoomName();
   const { provider, isReady } = useYjs({ room: roomName });
   const { userData } = useUserData();
@@ -76,8 +77,25 @@ export const LiveCodingSection: FC = () => {
                   permission={permission}
                 />
               ) : null}
+              {!liveCoding?.isLive && isAdmin && !isOfflineEdit ? (
+                <Button shape="round" onClick={() => setOfflineEdit(true)}>
+                  Start Offline editing
+                </Button>
+              ) : null}
+              {isOfflineEdit ? (
+                <Button
+                  shape="round"
+                  danger
+                  onClick={() => setOfflineEdit(false)}
+                >
+                  End offline editing
+                </Button>
+              ) : null}
             </Space>
-            <CodeEditor liveCoding={liveCoding} />
+            <CodeEditor
+              liveCoding={liveCoding}
+              offlineEditing={isOfflineEdit}
+            />
           </Row>
         </PresenceProvider>
       ) : null}

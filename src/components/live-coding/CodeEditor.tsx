@@ -23,7 +23,10 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../store";
 import { LiveCodingRoom } from "../../types/live-coding-types";
 
-const CodeEditor: FC<{ liveCoding?: LiveCodingRoom }> = ({ liveCoding }) => {
+const CodeEditor: FC<{
+  liveCoding?: LiveCodingRoom;
+  offlineEditing: boolean;
+}> = ({ liveCoding, offlineEditing }) => {
   const permission = useSelector(
     (state: RootState) => state.liveCoding.roomPermission
   );
@@ -42,7 +45,8 @@ const CodeEditor: FC<{ liveCoding?: LiveCodingRoom }> = ({ liveCoding }) => {
     }
   }, [doc, provider, editor]);
   const canWrite =
-    liveCoding?.isLive && permission?.write && activeFile !== undefined;
+    offlineEditing ||
+    (liveCoding?.isLive && permission?.write && activeFile !== undefined);
   return (
     <Row style={{ width: "100%" }} gutter={[12, 0]}>
       <Col span={6}>

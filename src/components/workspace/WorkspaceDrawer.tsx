@@ -18,7 +18,7 @@ const WorkspaceDrawer: FC<PopupProps> = ({ close, visible, action, form }) => {
         name: values.name,
         createdBy: userData?.id,
         createdAt: Timestamp.now(),
-        description: values.description,
+        description: values.description ?? "",
       }).then(async (doc) => {
         const workspaceId = doc.id;
         message.success("Created New Workspace " + values.name);
